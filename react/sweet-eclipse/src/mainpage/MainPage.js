@@ -1,6 +1,6 @@
 import './mainpage.css';
 import Footer from "./Footer";
-import Navbar from "./Navbar";
+import Navbar from "./navbar/Navbar";
 
 function MainPage(props) {
     return (
