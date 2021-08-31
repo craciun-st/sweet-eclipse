@@ -1,12 +1,16 @@
 import React from 'react';
 
 function CardImage(props) {
+
+    const cardImageContainerStyle = {
+        width: props.width ? props.width : 240
+    };
+
     return (
-        <div className="card-image">
+        <div className="card-image" style={cardImageContainerStyle}>
             <figure className="image is-4by3">
                 <img
                     src={props.imgSource}
-                    width={props.width? props.width : "120"}
                     alt={props.altText? props.altText : "An image"}
                 />
             </figure>
