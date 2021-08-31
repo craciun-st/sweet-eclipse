@@ -1,8 +1,14 @@
 import React from 'react';
 
 function CardContent(props) {
+
+    const cardContentStyle = {
+        width: props.width ? props.width : 300
+    };
+
+
     return (
-        <div className="card-content">
+        <div className="card-content" style={cardContentStyle}>
 
             <div className="media-content">
                 <p className="title is-5">
