@@ -3,13 +3,100 @@ import Footer from "./Footer";
 import Navbar from "./navbar/Navbar";
 import Card from "./card/Card";
 
+import {useEffect, useState} from "react";
+
+import {doGet} from "../util/Fetching";
+
+// const projects = [
+//     {
+//         "id": 1,
+//         "status": "ACTIVE",
+//         "title": "Save the stray dogs!",
+//         "description": "Collaborate to find a shelter for these misunderstood beings",
+//         "fundingGoal": 1000,
+//         "images": [
+//             {
+//                 "id": 1,
+//                 "uri": "/image_0001.png"
+//             },
+//             {
+//                 "id": 2,
+//                 "uri": "/image_0002.png"
+//             }
+//         ],
+//         "tags": [
+//             {
+//                 "id": 1,
+//                 "name": "pets"
+//             }
+//         ]
+//     },
+//     {
+//         "id": 2,
+//         "status": "ACTIVE",
+//         "title": "Help fund the biggest river cleanup effort!",
+//         "description": "The river X has too many junk floating in it! We need your help to finance a cleanup operation.",
+//         "fundingGoal": 2000,
+//         "images": [
+//             {
+//                 "id": 3,
+//                 "uri": "/image_0003.png"
+//             }
+//         ],
+//         "tags": [
+//             {
+//                 "id": 2,
+//                 "name": "community"
+//             },
+//             {
+//                 "id": 3,
+//                 "name": "environment"
+//             }
+//         ]
+//     }
+// ]
+
+
+
+
+
+
+
 function MainPage(props) {
+
+    const [projects, setProjects] = useState([]);
+
+    useEffect(
+        () => {
+            doGet(
+                'http://localhost:8080/api/projects',
+                (data) => setProjects(data)
+            )
+            return () => {
+                //do cleanup here
+            }
+        },
+        []
+    )
+
+
     return (
         <div>
             <Navbar />
 
 
-            <div className="is-flex is-flex-wrap-wrap">
+            <div className="is-flex is-flex-wrap-wrap is-justify-content-space-around">
+                {projects.map((project, index) => (
+                        <Card
+                            key={project.id}
+                            imgSource={project.images[0].uri}
+                            title={project.title}
+                            titleUrlRedirect="#"
+                            description={project.description}
+                        />
+                    )
+                )
+                }
                 <Card
                     imgSource="https://via.placeholder.com/120x90/eee?text=Mockup1"
                     title="Mockup project"
