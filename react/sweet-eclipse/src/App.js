@@ -7,6 +7,7 @@ import {
     Route,
     Switch
 } from "react-router-dom";
+import ProjectPage from "./projectpage/ProjectPage";
 
 
 
@@ -18,6 +19,7 @@ function App() {
             <Switch>
                 <Route exact path="/"><MainPage /></Route>
                 {/*<Route path="/my-account"><ProfilePage /></Route>*/}
+                <Route path="/project/:id" children={<ProjectPage />} />
             </Switch>
         </BrowserRouter>
     </div>

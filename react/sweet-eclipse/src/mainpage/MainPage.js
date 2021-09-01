@@ -88,10 +88,10 @@ function MainPage(props) {
             <div className="is-flex is-flex-wrap-wrap is-justify-content-space-around">
                 {projects.map((project, index) => (
                         <Card
-                            key={project.id}
+                            key={index}
                             imgSource={project.images[0].uri}
                             title={project.title}
-                            titleUrlRedirect="#"
+                            titleUrlRedirect={'/project/'+project.id}
                             description={project.description}
                         />
                     )
