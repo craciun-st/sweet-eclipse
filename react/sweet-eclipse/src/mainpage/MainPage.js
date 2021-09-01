@@ -1,6 +1,6 @@
 import './mainpage.css';
 import Footer from "./Footer";
-import Navbar from "./navbar/Navbar";
+import Navbar from "../navbar/Navbar";
 import Card from "./card/Card";
 
 import {useEffect, useState} from "react";
