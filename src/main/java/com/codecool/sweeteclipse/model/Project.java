@@ -21,7 +21,10 @@ public class Project {
 
     private String description;
 
+    private Double currentFunds;
     private Double fundingGoal;
+
+    private Integer nrDonors;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "depictedProject", cascade = CascadeType.ALL)
@@ -57,7 +60,9 @@ public class Project {
         this.status = status;
         this.title = title;
         this.description = description;
+        this.currentFunds = 0.0;
         this.fundingGoal = fundingGoal;
+        this.nrDonors = 0;
         this.images = images;
         this.tags = tags;
     }
@@ -104,6 +109,22 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getNrDonors() {
+        return nrDonors;
+    }
+
+    public void setNrDonors(Integer nrDonors) {
+        this.nrDonors = nrDonors;
+    }
+
+    public Double getCurrentFunds() {
+        return currentFunds;
+    }
+
+    public void setCurrentFunds(Double currentFunds) {
+        this.currentFunds = currentFunds;
     }
 
     public Double getFundingGoal() {
