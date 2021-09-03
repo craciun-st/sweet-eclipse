@@ -7,8 +7,38 @@ import Navbar from "../navbar/Navbar";
 import BigImage from "./BigImage";
 import ProgressBar from "./ProgressBar";
 import FancyButton from "./FancyButton";
+import {doGet} from "../util/Fetching";
+
 function ProjectPage(props) {
     let {id} = useParams();
+
+    const [project, setProject] = useState(
+        {
+            images: [
+                {
+                    uri:""
+                }
+            ]
+        }
+    );
+
+
+    let percentValue = 0;
+
+    useEffect(
+        () => {
+            doGet(
+                'http://localhost:8080/api/project/'+id.toString(),
+                (data) => {setProject(data); console.log(data);
+                    }
+            )
+            return () => {
+                //do cleanup here
+            }
+        },
+        [id]
+    )
+
 
     percentValue = project.fundingGoal ? Math.trunc(project.currentFunds/project.fundingGoal * 100) : 0;
 
