@@ -11,4 +11,7 @@ import java.util.List;
 @Repository
 public interface DonationRepository extends JpaRepository<Donation, Long> {
 
+    Integer countAllByDonorAndProject(User donor, Project project);
+
+    Boolean existsByDonorAndProject(User donor, Project project);
 }
