@@ -113,3 +113,48 @@ public class User {
         this.donations = donations;
     }
 
+    // custom functions
+
+    public void addRole(UserRole newRole) {
+        this.roles.add(newRole);
+    }
+
+    public void removeRole(UserRole userRole) {
+        this.roles.remove(userRole);
+    }
+
+    public void addDonation(Donation donation) {
+        if (donation.getDonor() == null || donation.getDonor().equals(this)) {
+            if (donation.getDonor() == null) {
+                donation.setDonor(this);
+            }
+            this.donations.add(donation);
+        }
+    }
+
+    public void removeDonationById(long id) {
+        Donation foundDonation = donations.stream()
+                .filter(donation -> donation.getId() == id)
+                .findFirst()
+                .orElseThrow(
+                        () -> {
+                            throw new RuntimeException(
+                                    "Could not find donation with id:" + id + " for User:" + this.name
+                            );
+                        }
+                );
+        this.donations.remove(foundDonation);
+    }
+
+
+    public void donate(
+            double amount,
+            @NotNull Project project,
+            DonationManagementService donationManagement
+    ) {
+        if (amount > 0) {
+            Donation newDonation = new Donation(null, this, amount, project);
+            donationManagement.registerDonation(newDonation);
+        }
+    }
+}
