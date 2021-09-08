@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -39,6 +40,9 @@ public class Project {
     )
     private Set<ProjectTag> tags;
 
+    @OneToMany(mappedBy = "project", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Donation> donations;
+
 
     public Project() {
         this.status = ProjectStatus.MISSING_INFO;
@@ -54,7 +58,8 @@ public class Project {
             String description,
             Double fundingGoal,
             List<ImageData> images,
-            Set<ProjectTag> tags
+            Set<ProjectTag> tags,
+            Set<Donation> donations
     ) {
         this.id = id;
         this.status = status;
@@ -65,6 +70,7 @@ public class Project {
         this.nrDonors = 0;
         this.images = images;
         this.tags = tags;
+        this.donations = donations;
     }
 
     public Project(String title, String description, double fundingGoal) {
@@ -74,6 +80,7 @@ public class Project {
         this.fundingGoal = fundingGoal;
         this.images = new ArrayList<>();
         this.tags = new HashSet<>();
+        this.donations = new HashSet<>();
     }
 
 
