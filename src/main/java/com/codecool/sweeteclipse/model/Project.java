@@ -180,4 +180,49 @@ public class Project {
         this.tags.remove(tag);
         tag.removeProject(this);
     }
+
+    public void addDonation(@NotNull Donation donation) {
+        if (donation.getProject() == null || donation.getProject().equals(this)) {
+            if (donation.getProject() == null) {
+                donation.setProject(this);
+            }
+            if ( this.donations.add(donation) ) {
+                this.currentFunds += donation.getAmount();
+            }
+        }
+    }
+
+    public void addDonation(@NotNull Donation donation, boolean donatedBefore) {
+        if (donation.getProject() == null || donation.getProject().equals(this)) {
+            if (donation.getProject() == null) {
+                donation.setProject(this);
+            }
+            if ( this.donations.add(donation) ) {
+                if (!donatedBefore) { this.nrDonors += 1; }
+                this.currentFunds += donation.getAmount();
+            }
+        }
+    }
+
+    public void removeDonation(@NotNull Donation donation) {
+        if (donation.getProject().equals(this)) {
+            if ( this.donations.remove(donation) ) {
+                this.currentFunds -= donation.getAmount();
+            }
+        }
+    }
+
+    public void removeDonationById(long id) {
+        Donation foundDonation = donations.stream()
+                .filter(donation -> donation.getId() == id)
+                .findFirst()
+                .orElseThrow(
+                        () -> {
+                            throw new RuntimeException(
+                                    "Could not find donation with id:" + id + " for Project:" + this.title
+                            );
+                        }
+                );
+        this.donations.remove(foundDonation);
+    }
 }
