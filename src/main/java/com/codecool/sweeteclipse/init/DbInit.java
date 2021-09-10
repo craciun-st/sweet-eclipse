@@ -1,16 +1,16 @@
 package com.codecool.sweeteclipse.init;
 
-import com.codecool.sweeteclipse.model.ImageData;
-import com.codecool.sweeteclipse.model.Project;
-import com.codecool.sweeteclipse.model.ProjectTag;
-import com.codecool.sweeteclipse.repository.ImageDataRepository;
-import com.codecool.sweeteclipse.repository.ProjectRepository;
-import com.codecool.sweeteclipse.repository.ProjectTagRepository;
+import com.codecool.sweeteclipse.model.*;
+import com.codecool.sweeteclipse.repository.*;
+import com.codecool.sweeteclipse.service.DonationManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class DbInit implements CommandLineRunner {
@@ -18,12 +18,28 @@ public class DbInit implements CommandLineRunner {
     private ImageDataRepository imageRepo;
     private ProjectRepository projectRepo;
     private ProjectTagRepository tagRepo;
+    private DonationRepository donationRepo;
+    private UserRepository userRepo;
+
+    private DonationManagementService donationManagement;
+
+
 
     @Autowired
-    public DbInit(ImageDataRepository imageRepo, ProjectRepository projectRepo, ProjectTagRepository tagRepo) {
+    public DbInit(
+            ImageDataRepository imageRepo,
+            ProjectRepository projectRepo,
+            ProjectTagRepository tagRepo,
+            DonationRepository donationRepo,
+            UserRepository userRepo,
+            DonationManagementService donationManagement
+    ) {
         this.imageRepo = imageRepo;
         this.projectRepo = projectRepo;
         this.tagRepo = tagRepo;
+        this.donationRepo = donationRepo;
+        this.userRepo = userRepo;
+        this.donationManagement = donationManagement;
     }
 
     @Override
@@ -45,6 +61,28 @@ public class DbInit implements CommandLineRunner {
                 2000
         );
 
+        User admin = new User(
+                1L,
+                "Admin",
+                "admin@sweeteclipse.com",
+                null,
+                Set.of(UserRole.ADMIN, UserRole.USER),
+                new LinkedList<Donation>()
+        );
+        admin.setPassword("987");
+
+        User anon = new User(
+                2L,
+                "Anonymous",
+                "_@test.test",
+                "",
+                Set.of(UserRole.PLACEHOLDER_ANONYMOUS),
+                new LinkedList<Donation>()
+        );
+
+        User johnDoe = new User("John Doe", "john_doe@test.test", null);
+        johnDoe.setPassword("123");
+
 
         strayDogProject.addImage(image1);
         strayDogProject.addImage(image2);
@@ -61,9 +99,23 @@ public class DbInit implements CommandLineRunner {
         strayDogProject.setNrDonors(8);
         riverCleanupProject.setNrDonors(89);
 
+
+
         projectRepo.saveAll(List.of(strayDogProject, riverCleanupProject));
         imageRepo.saveAll(List.of(image1, image2, image3));
         tagRepo.saveAll(List.of(tag1, tag2));
+        userRepo.save(admin);
+        userRepo.save(anon);
+        userRepo.save(johnDoe);
+
+        // this saves donations to donationRepo
+        anon.donate(1, riverCleanupProject, donationManagement);
+        johnDoe.donate(4.25, strayDogProject, donationManagement);
+        anon.donate(2, riverCleanupProject, donationManagement);
+
+
+
+
 
     }
 }
