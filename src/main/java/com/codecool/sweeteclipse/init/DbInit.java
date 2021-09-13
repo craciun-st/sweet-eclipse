@@ -5,6 +5,7 @@ import com.codecool.sweeteclipse.repository.*;
 import com.codecool.sweeteclipse.service.DonationManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -22,6 +23,7 @@ public class DbInit implements CommandLineRunner {
     private UserRepository userRepo;
 
     private DonationManagementService donationManagement;
+    private PasswordEncoder passwordEncoder;
 
 
 
@@ -32,7 +34,8 @@ public class DbInit implements CommandLineRunner {
             ProjectTagRepository tagRepo,
             DonationRepository donationRepo,
             UserRepository userRepo,
-            DonationManagementService donationManagement
+            DonationManagementService donationManagement,
+            PasswordEncoder passwordEncoder
     ) {
         this.imageRepo = imageRepo;
         this.projectRepo = projectRepo;
@@ -40,6 +43,7 @@ public class DbInit implements CommandLineRunner {
         this.donationRepo = donationRepo;
         this.userRepo = userRepo;
         this.donationManagement = donationManagement;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -69,7 +73,7 @@ public class DbInit implements CommandLineRunner {
                 Set.of(UserRole.ADMIN, UserRole.USER),
                 new LinkedList<Donation>()
         );
-        admin.setPassword("987");
+        admin.setPassword(passwordEncoder.encode("987"));
 
         User anon = new User(
                 2L,
@@ -81,7 +85,7 @@ public class DbInit implements CommandLineRunner {
         );
 
         User johnDoe = new User("John Doe", "john_doe@test.test", null);
-        johnDoe.setPassword("123");
+        johnDoe.setPassword(passwordEncoder.encode("123"));
 
 
         strayDogProject.addImage(image1);
