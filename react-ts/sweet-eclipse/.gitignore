@@ -22,8 +22,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-**/*.js
-**.jsx
 
 # tsc outDir
 ts_generated/
+
+# IntelliJ IDEA
+.idea
