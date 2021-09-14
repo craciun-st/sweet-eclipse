@@ -12,13 +12,15 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserDetailsServiceImplemented implements UserDetailsService {
+public class AppsOwnUserDetailsService implements UserDetailsService {
 
     private UserRepository userRepo;
 
     @Autowired
-    public UserDetailsServiceImplemented(UserRepository userRepo) {
+    public AppsOwnUserDetailsService(UserRepository userRepo) {
+
         this.userRepo = userRepo;
+
     }
 
     @Override
@@ -26,8 +28,6 @@ public class UserDetailsServiceImplemented implements UserDetailsService {
         Optional<com.codecool.sweeteclipse.model.User> maybeOurUser = userRepo.findUserByName(s);
         Optional<UserDetails> maybeUserDetails = maybeOurUser.map(this::mapOurUserToSecurityUser);
         return maybeUserDetails.orElseThrow( () -> new UsernameNotFoundException("Could not find user " + s) );
-
-
     }
 
     public UserDetails mapOurUserToSecurityUser(com.codecool.sweeteclipse.model.User ourUser) {
