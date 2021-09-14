@@ -1,5 +1,7 @@
 package com.codecool.sweeteclipse.model;
 
+import com.codecool.sweeteclipse.model.user.User;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;

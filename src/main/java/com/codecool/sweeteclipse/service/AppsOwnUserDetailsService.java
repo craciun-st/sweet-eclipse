@@ -25,12 +25,12 @@ public class AppsOwnUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Optional<com.codecool.sweeteclipse.model.User> maybeOurUser = userRepo.findUserByName(s);
+        Optional<com.codecool.sweeteclipse.model.user.User> maybeOurUser = userRepo.findUserByName(s);
         Optional<UserDetails> maybeUserDetails = maybeOurUser.map(this::mapOurUserToSecurityUser);
         return maybeUserDetails.orElseThrow( () -> new UsernameNotFoundException("Could not find user " + s) );
     }
 
-    public UserDetails mapOurUserToSecurityUser(com.codecool.sweeteclipse.model.User ourUser) {
+    public UserDetails mapOurUserToSecurityUser(com.codecool.sweeteclipse.model.user.User ourUser) {
         String[] ourUserAuthorities = ourUser.getRoles().stream()
                 .map(userRole -> userRole.toNoPrefixString())
                 .toArray(String[]::new);

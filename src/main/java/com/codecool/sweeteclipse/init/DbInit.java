@@ -1,6 +1,8 @@
 package com.codecool.sweeteclipse.init;
 
 import com.codecool.sweeteclipse.model.*;
+import com.codecool.sweeteclipse.model.user.User;
+import com.codecool.sweeteclipse.model.user.UserRole;
 import com.codecool.sweeteclipse.repository.*;
 import com.codecool.sweeteclipse.service.DonationManagementService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.codecool.sweeteclipse.model;
+package com.codecool.sweeteclipse.model.user;
 
 public enum UserRole {
     ADMIN,

@@ -1,5 +1,7 @@
-package com.codecool.sweeteclipse.model;
+package com.codecool.sweeteclipse.model.user;
 
+import com.codecool.sweeteclipse.model.Donation;
+import com.codecool.sweeteclipse.model.Project;
 import com.codecool.sweeteclipse.service.DonationManagementService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -12,13 +14,9 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-public class User {
+public class User extends AbstractAncestorOfUser {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String name;
 
     @Email
     private String email;
@@ -26,13 +24,7 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
-    @CollectionTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id")
-    )
-    @Column(name = "role_id")
-    private Set<UserRole> roles;
+
 
     @OneToMany(mappedBy = "donor", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Donation> donations;
@@ -40,8 +32,8 @@ public class User {
 
     // Constructors
     public User() {
+        super();
         this.email = "null@null.null";
-        this.roles = new HashSet<>(List.of(UserRole.USER));
         this.donations = new LinkedList<>();
     }
 
@@ -50,16 +42,14 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.roles = new HashSet<>(List.of(UserRole.USER));
+        this.roles = new HashSet<>(List.of(UserRole.USER)); // this is super()
         this.donations = new LinkedList<>();
     }
 
     public User(Long id, String name, String email, String password, Set<UserRole> roles, List<Donation> donations) {
-        this.id = id;
-        this.name = name;
+        super(id, name, roles);
         this.email = email;
         this.password = password;
-        this.roles = roles;
         this.donations = donations;
     }
 
@@ -67,21 +57,7 @@ public class User {
 
     // Getters and setters
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getEmail() {
         return email;
@@ -99,13 +75,7 @@ public class User {
         this.password = password;
     }
 
-    public Set<UserRole> getRoles() {
-        return roles;
-    }
 
-    public void setRoles(Set<UserRole> roles) {
-        this.roles = roles;
-    }
 
     public List<Donation> getDonations() {
         return donations;
@@ -116,14 +86,6 @@ public class User {
     }
 
     // custom functions
-
-    public void addRole(UserRole newRole) {
-        this.roles.add(newRole);
-    }
-
-    public void removeRole(UserRole userRole) {
-        this.roles.remove(userRole);
-    }
 
     public void addDonation(Donation donation) {
         if (donation.getDonor() == null || donation.getDonor().equals(this)) {
@@ -159,4 +121,6 @@ public class User {
             donationManagement.registerDonation(newDonation);
         }
     }
+
+
 }

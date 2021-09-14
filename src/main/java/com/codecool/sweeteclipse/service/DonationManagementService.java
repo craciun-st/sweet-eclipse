@@ -2,7 +2,7 @@ package com.codecool.sweeteclipse.service;
 
 import com.codecool.sweeteclipse.model.Donation;
 import com.codecool.sweeteclipse.model.Project;
-import com.codecool.sweeteclipse.model.User;
+import com.codecool.sweeteclipse.model.user.User;
 import com.codecool.sweeteclipse.repository.DonationRepository;
 import com.codecool.sweeteclipse.repository.ProjectRepository;
 import com.codecool.sweeteclipse.repository.UserRepository;

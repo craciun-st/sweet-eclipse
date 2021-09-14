@@ -1,6 +1,6 @@
 package com.codecool.sweeteclipse.config;
 
-import com.codecool.sweeteclipse.service.UserDetailsServiceImplemented;
+import com.codecool.sweeteclipse.model.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
