@@ -4,14 +4,17 @@ import com.codecool.sweeteclipse.model.user.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 import java.security.SecureRandom;
 
@@ -19,11 +22,16 @@ import java.security.SecureRandom;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserDetailsServiceImplemented userDetailsService;
+    private UserDetailsService userDetailsService;
+    private AuthenticationEntryPoint authEntryPoint;
 
     @Autowired
-    public WebSecurityConfig(UserDetailsServiceImplemented userDetailsService) {
+    public WebSecurityConfig(
+            UserDetailsService userDetailsService,
+            AuthenticationEntryPoint authEntryPoint
+    ) {
         this.userDetailsService = userDetailsService;
+        this.authEntryPoint = authEntryPoint;
     }
 
     @Autowired
@@ -59,9 +67,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-//                .antMatchers("/login").permitAll()
-                .antMatchers("/**").permitAll()
-                .anyRequest().permitAll()
+                .antMatchers("/api/signup").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/project*/**").permitAll()
+//                .antMatchers("/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .httpBasic()
+                .authenticationEntryPoint(authEntryPoint)
                 .and()
                 .exceptionHandling();
 
