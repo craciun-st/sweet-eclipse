@@ -8,6 +8,7 @@ import {
     Switch
 } from "react-router-dom";
 import ProjectPage from "./projectpage/ProjectPage";
+import SignUpPage from "./auth_modals/SignUpPage";
 
 
 
@@ -20,6 +21,7 @@ function App() {
                 <Route exact path="/"><MainPage /></Route>
                 {/*<Route path="/my-account"><ProfilePage /></Route>*/}
                 <Route path="/project/:id" children={<ProjectPage />} />
+                <Route path="/signup"><SignUpPage /></Route>
             </Switch>
         </BrowserRouter>
     </div>
