@@ -16,7 +16,7 @@ function Navbar(props: any) {
 
                 <div id="navbarBasicExample" className="navbar-menu">
                     <div className="navbar-start">
-                        <NavbarItem name="Home" />
+                        <NavbarItem name="Home" urlRedirect={"/"}/>
                         <NavbarItem name="Completed Projects" />
                         <DropdownMenu buttonName="More" />
                     </div>
