@@ -1,6 +1,6 @@
 import './projectpage.css';
 
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {useParams} from 'react-router-dom';
 import Navbar from "../navbar/Navbar";
@@ -12,36 +12,39 @@ import {Project} from "../ts-declarations/Project";
 import SocialMediaContainer from "./SocialMediaContainer";
 import ShareButton from "./buttons/ShareButton";
 import TagContainer from "./tags/TagContainer";
-import {useHistory} from "react-router-dom";
 
 export const DEFAULT_PP_ELEMENT_WIDTH = "55vw";
+
+const initialProject: Project = {
+    currentFunds: 0,
+    description: "",
+    fundingGoal: 0,
+    id: 0,
+    images: [
+        {
+            id: 0,
+            uri: ""
+        }
+    ],
+    nrDonors: 0,
+    status: "MISSING_INFO",
+    tags: [
+        {
+            id: 0,
+            name: ""
+        }
+    ],
+    title: ""
+};
+
+
 
 function ProjectPage(props: any) {
     let {id} = useParams<{ id: string }>();
 
-    const browserHistory = useHistory();
 
-    const initialProject: Project = {
-        currentFunds: 0,
-        description: "",
-        fundingGoal: 0,
-        id: 0,
-        images: [
-            {
-                id: 0,
-                uri: ""
-            }
-        ],
-        nrDonors: 0,
-        status: "MISSING_INFO",
-        tags: [
-            {
-                id: 0,
-                name: ""
-            }
-        ],
-        title: ""
-    };
+
+
 
     const [project, setProject] = useState(
         initialProject
