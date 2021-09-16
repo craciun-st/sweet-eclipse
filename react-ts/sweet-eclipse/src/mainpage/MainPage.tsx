@@ -8,59 +8,6 @@ import {useEffect, useState} from "react";
 import {doGet} from "../util/Fetching";
 import {Project} from "../ts-declarations/Project";
 
-// const projects = [
-//     {
-//         "id": 1,
-//         "status": "ACTIVE",
-//         "title": "Save the stray dogs!",
-//         "description": "Collaborate to find a shelter for these misunderstood beings",
-//         "fundingGoal": 1000,
-//         "images": [
-//             {
-//                 "id": 1,
-//                 "uri": "/image_0001.png"
-//             },
-//             {
-//                 "id": 2,
-//                 "uri": "/image_0002.png"
-//             }
-//         ],
-//         "tags": [
-//             {
-//                 "id": 1,
-//                 "name": "pets"
-//             }
-//         ]
-//     },
-//     {
-//         "id": 2,
-//         "status": "ACTIVE",
-//         "title": "Help fund the biggest river cleanup effort!",
-//         "description": "The river X has too many junk floating in it! We need your help to finance a cleanup operation.",
-//         "fundingGoal": 2000,
-//         "images": [
-//             {
-//                 "id": 3,
-//                 "uri": "/image_0003.png"
-//             }
-//         ],
-//         "tags": [
-//             {
-//                 "id": 2,
-//                 "name": "community"
-//             },
-//             {
-//                 "id": 3,
-//                 "name": "environment"
-//             }
-//         ]
-//     }
-// ]
-
-
-
-
-
 
 
 function MainPage(props: any) {
