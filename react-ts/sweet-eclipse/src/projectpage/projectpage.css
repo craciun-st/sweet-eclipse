@@ -1,3 +1,4 @@
 .outlinedProgressBar{
     border: solid;
+    margin-bottom: 0.25rem !important;
 }
