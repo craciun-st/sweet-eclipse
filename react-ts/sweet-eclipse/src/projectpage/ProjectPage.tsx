@@ -6,12 +6,17 @@ import {useParams} from 'react-router-dom';
 import Navbar from "../navbar/Navbar";
 import BigImage from "./BigImage";
 import ProgressBar from "./ProgressBar";
-import FancyButton from "./FancyButton";
+import FancyButton from "./buttons/FancyButton";
 import {doGet} from "../util/Fetching";
 import {Project} from "../ts-declarations/Project";
+import SocialMediaContainer from "./SocialMediaContainer";
+import ShareButton from "./buttons/ShareButton";
+import TagContainer from "./tags/TagContainer";
+
+export const DEFAULT_PP_ELEMENT_WIDTH = "55vw";
 
 function ProjectPage(props: any) {
-    let {id} = useParams<{id: string}>();
+    let {id} = useParams<{ id: string }>();
 
     const initialProject: Project = {
         currentFunds: 0,
@@ -45,9 +50,11 @@ function ProjectPage(props: any) {
     useEffect(
         () => {
             doGet(
-                'http://localhost:8080/api/project/'+id,
-                (data: Project) => {setProject(data); console.log(data);
-                    }
+                'http://localhost:8080/api/project/' + id,
+                (data: Project) => {
+                    if (data) {setProject(data)}
+                    console.log(data);
+                }
             )
             return () => {
                 //do cleanup here
@@ -57,30 +64,43 @@ function ProjectPage(props: any) {
     )
 
 
-    percentValue = project.fundingGoal ? Math.trunc(project.currentFunds/project.fundingGoal * 100) : 0;
+    percentValue = project.fundingGoal ? Math.trunc(project.currentFunds / project.fundingGoal * 100) : 0;
 
     return (
         <div>
-            <Navbar />
+            <Navbar/>
+            <div className={"projectPageContainer"}>
 
-            <BigImage imgSource={project.images? project.images[0].uri : ""}/>
-            <ProgressBar
-                currentFunds={project.currentFunds}
-                fundingGoal={project.fundingGoal}
-                nrDonors={project.nrDonors}
-                percentValue={percentValue}
-            />
-            <div>
-                <FancyButton>Donate!</FancyButton>
-                <FancyButton>Share</FancyButton>
-            </div>
-            <br />
-            <br />
-            <div className="title is-3">
-                {project.title}
-            </div>
-            <div className="content is-small">
-                {project.description}
+                <BigImage imgSource={project.images ? project.images[0].uri : ""}/>
+                <ProgressBar
+                    currentFunds={project.currentFunds}
+                    fundingGoal={project.fundingGoal}
+                    nrDonors={project.nrDonors}
+                    percentValue={percentValue}
+                />
+                <SocialMediaContainer>
+                    <TagContainer tags={ project.tags ? project.tags : [] }/>
+                    <ShareButton>Share</ShareButton>
+                </SocialMediaContainer>
+                <br/>
+
+                <div style={{width: DEFAULT_PP_ELEMENT_WIDTH}}>
+                    <FancyButton
+                        classAddons={" is-link is-large is-fullwidth"}
+                        icon={"fas fa-piggy-bank"}
+                    >
+                        Donate!
+                    </FancyButton>
+
+                    <br/>
+                    <br/>
+                    <div className="title is-3">
+                        {project.title}
+                    </div>
+                    <div className="content is-small">
+                        {project.description}
+                    </div>
+                </div>
             </div>
         </div>
     );
