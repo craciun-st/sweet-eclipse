@@ -22,7 +22,6 @@ public class ProjectController {
         this.projectRepo = projectRepo;
     }
 
-    @Autowired
 
 
     @GetMapping("/api/projects")
