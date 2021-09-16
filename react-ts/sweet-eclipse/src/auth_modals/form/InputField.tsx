@@ -2,7 +2,10 @@ import React from 'react';
 import {Field} from "formik";
 
 function InputField(props: any) {
-    const fieldClassName = "input" + ((props.isInvalid) ? " is-danger" : ((props.isTouched) ? " is-success" : ""));
+    const fieldClassName = "input" +
+        (props.requiresCare ? " is-warning" :
+            ((props.isInvalid) ? " is-danger" : ((props.isTouched) ? " is-success" : ""))
+        );
     const fieldType = props.inputType ? props.inputType : null
     return (
         <div>
