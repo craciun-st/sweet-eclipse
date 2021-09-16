@@ -1,10 +1,17 @@
-import React, {Component} from 'react';
-import {Formik, Form, Field} from 'formik';
+import React from 'react';
+import {Form, Formik, FormikValues} from 'formik';
 import * as Yup from 'yup';
 import FieldContainer from "./form/FieldContainer";
 import InputField from "./form/InputField";
 import ValidationIcon from "./form/ValidationIcon";
 import ErrorMessageDisplay from "./form/ErrorMessageDisplay";
+import {doPostAndProcessResponse} from "../util/Fetching";
+import {useHistory} from "react-router-dom";
+
+import {atom, useAtom} from "jotai";
+
+
+export const shouldSucceedSignUp = atom(true);
 
 const SignupSchema = Yup.object().shape({
     username: Yup.string()
@@ -23,25 +30,30 @@ const SignupSchema = Yup.object().shape({
         .required('Please confirm your password')
 });
 
-class SignUpPage extends Component {
-    render() {
-        return (
-            <div>
-                <h1>Signup</h1>
-                <Formik
-                    initialValues={{
-                        username: '',
-                        email: '',
-                        password: '',
-                        passwordConfirmation: ''
-                    }}
-                    validationSchema={SignupSchema}
-                    onSubmit={values => {
-                        // same shape as initial values
-                        console.log(values);
-                    }}
-                >
-                    {({errors, touched}) => (
+
+
+function SignUpPage(props: any) {
+    const [isUniqueUser, setIsUniqueUser] = useAtom(shouldSucceedSignUp);
+    const browserHistory = useHistory();
+
+
+
+
+    return (
+        <div>
+            <h1>Signup</h1>
+
+            <Formik
+                initialValues={{
+                    username: '',
+                    email: '',
+                    password: '',
+                    passwordConfirmation: ''
+                }}
+                validationSchema={SignupSchema}
+                onSubmit={values => attemptToSubmit(values)}
+            >
+                {({errors, touched}) => (
 
                         <Form>
                             <FieldContainer labelText={"Name"}>
@@ -66,70 +78,70 @@ class SignUpPage extends Component {
                             </FieldContainer>
 
 
-                            <FieldContainer labelText={"E-mail"}>
-                                <InputField
-                                    fieldName={"email"}
-                                    isInvalid={errors.email && touched.email}
-                                    isTouched={touched.email}
-                                    inner={
-                                        <ValidationIcon
-                                            hasIcon={touched.email}
-                                            isInvalid={errors.email && touched.email}
-                                        />
-                                    }
-                                    outer={
-                                        <ErrorMessageDisplay
-                                            hasError={errors.email && touched.email}
-                                            errorMessage={errors.email}
-                                        />
-                                    }
-                                >
-                                </InputField>
-                            </FieldContainer>
+                        <FieldContainer labelText={"E-mail"}>
+                            <InputField
+                                fieldName={"email"}
+                                isInvalid={errors.email && touched.email}
+                                isTouched={touched.email}
+                                inner={
+                                    <ValidationIcon
+                                        hasIcon={touched.email}
+                                        isInvalid={errors.email && touched.email}
+                                    />
+                                }
+                                outer={
+                                    <ErrorMessageDisplay
+                                        hasError={errors.email && touched.email}
+                                        errorMessage={errors.email}
+                                    />
+                                }
+                            >
+                            </InputField>
+                        </FieldContainer>
 
-                            <FieldContainer labelText={"Password"}>
-                                <InputField
-                                    fieldName={"password"}
-                                    inputType={"password"}
-                                    isInvalid={errors.password && touched.password}
-                                    isTouched={touched.password}
-                                    inner={
-                                        <ValidationIcon
-                                            hasIcon={touched.password}
-                                            isInvalid={errors.password && touched.password}
-                                        />
-                                    }
-                                    outer={
-                                        <ErrorMessageDisplay
-                                            hasError={errors.password && touched.password}
-                                            errorMessage={errors.password}
-                                        />
-                                    }
-                                >
-                                </InputField>
-                            </FieldContainer>
+                        <FieldContainer labelText={"Password"}>
+                            <InputField
+                                fieldName={"password"}
+                                inputType={"password"}
+                                isInvalid={errors.password && touched.password}
+                                isTouched={touched.password}
+                                inner={
+                                    <ValidationIcon
+                                        hasIcon={touched.password}
+                                        isInvalid={errors.password && touched.password}
+                                    />
+                                }
+                                outer={
+                                    <ErrorMessageDisplay
+                                        hasError={errors.password && touched.password}
+                                        errorMessage={errors.password}
+                                    />
+                                }
+                            >
+                            </InputField>
+                        </FieldContainer>
 
-                            <FieldContainer labelText={"Confirm Password"}>
-                                <InputField
-                                    fieldName={"passwordConfirmation"}
-                                    inputType={"password"}
-                                    isInvalid={errors.passwordConfirmation && touched.passwordConfirmation}
-                                    isTouched={touched.passwordConfirmation}
-                                    inner={
-                                        <ValidationIcon
-                                            hasIcon={touched.passwordConfirmation}
-                                            isInvalid={errors.passwordConfirmation && touched.passwordConfirmation}
-                                        />
-                                    }
-                                    outer={
-                                        <ErrorMessageDisplay
-                                            hasError={errors.passwordConfirmation && touched.passwordConfirmation}
-                                            errorMessage={errors.passwordConfirmation}
-                                        />
-                                    }
-                                >
-                                </InputField>
-                            </FieldContainer>
+                        <FieldContainer labelText={"Confirm Password"}>
+                            <InputField
+                                fieldName={"passwordConfirmation"}
+                                inputType={"password"}
+                                isInvalid={errors.passwordConfirmation && touched.passwordConfirmation}
+                                isTouched={touched.passwordConfirmation}
+                                inner={
+                                    <ValidationIcon
+                                        hasIcon={touched.passwordConfirmation}
+                                        isInvalid={errors.passwordConfirmation && touched.passwordConfirmation}
+                                    />
+                                }
+                                outer={
+                                    <ErrorMessageDisplay
+                                        hasError={errors.passwordConfirmation && touched.passwordConfirmation}
+                                        errorMessage={errors.passwordConfirmation}
+                                    />
+                                }
+                            >
+                            </InputField>
+                        </FieldContainer>
 
                             <button type="submit">Submit</button>
                         </Form>
