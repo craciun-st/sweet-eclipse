@@ -7,7 +7,7 @@ function BigImage(props: any) {
     };
     return (
         <div style={bigImageContainerStyle}>
-            <figure className="image is-5by3" >
+            <figure className="image bigImage" >
                 <img
                     src={props.imgSource}
                     alt={props.altText? props.altText : "An image"}

@@ -2,3 +2,21 @@
     border: solid;
     margin-bottom: 0.25rem !important;
 }
+.bigImage img {
+    max-width: 55vw;
+    max-height: 30vw;
+}
+
+.socialMediaContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.projectPageContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}

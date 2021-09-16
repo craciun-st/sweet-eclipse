@@ -18,7 +18,7 @@ function ProgressBar(props: any) {
                 </div>
             </div>
             <progress className="progress is-info outlinedProgressBar" value={props.percentValue} max="100">{props.percentValue}%</progress>
-            <div className="is-size-7">
+            <div className="is-size-6">
                 {props.percentValue}% of <i className="fas fa-piggy-bank"></i> {props.fundingGoal} Goal
             </div>
         </div>
