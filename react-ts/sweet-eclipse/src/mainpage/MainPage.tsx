@@ -34,7 +34,7 @@ function MainPage(props: any) {
             <Navbar />
 
 
-            <div className="is-flex is-flex-wrap-wrap is-justify-content-space-around">
+            <div className="mainPageContainer">
                 {projects.map((project, index) => (
                         <Card
                             key={index}

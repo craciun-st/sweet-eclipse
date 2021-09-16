@@ -2,12 +2,12 @@ import React from 'react';
 
 function CardImage(props: any) {
 
-    const cardImageContainerStyle = {
-        width: props.width ? props.width : 240
-    };
+    // const cardImageContainerStyle = {
+    //     width: props.width ? props.width : 240
+    // };
 
     return (
-        <div className="card-image" style={cardImageContainerStyle}>
+        <div className="card-image">
             <figure className="image is-5by3">
                 <img
                     src={props.imgSource}

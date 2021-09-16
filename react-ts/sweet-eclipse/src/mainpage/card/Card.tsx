@@ -4,7 +4,7 @@ import CardContent from "./CardContent";
 
 function Card(props: any) {
     return (
-        <div className="card">
+        <div className="card cardSizeAdjust">
             <CardImage imgSource={props.imgSource} altText={props.imgAltText} />
             <CardContent title={props.title} description={props.description} urlRedirect={props.titleUrlRedirect} />
         </div>
