@@ -55,27 +55,34 @@ function SignUpPage(props: any) {
             >
                 {({errors, touched}) => (
 
-                        <Form>
-                            <FieldContainer labelText={"Name"}>
-                                <InputField
-                                    fieldName={"username"}
-                                    isInvalid={errors.username && touched.username}
-                                    isTouched={touched.username}
-                                    inner={
-                                        <ValidationIcon
-                                            hasIcon={touched.username}
-                                            isInvalid={errors.username && touched.username}
-                                        />
-                                    }
-                                    outer={
+                    <Form>
+                        <FieldContainer labelText={"Name"}>
+                            <InputField
+                                fieldName={"username"}
+                                isInvalid={errors.username && touched.username}
+                                isTouched={touched.username}
+                                requiresCare={!isUniqueUser}
+                                inner={
+                                    <ValidationIcon
+                                        hasIcon={touched.username}
+                                        isInvalid={(errors.username && touched.username) || !isUniqueUser}
+                                    />
+                                }
+                                outer={
+                                    <div>
                                         <ErrorMessageDisplay
                                             hasError={errors.username && touched.username}
                                             errorMessage={errors.username}
                                         />
-                                    }
-                                >
-                                </InputField>
-                            </FieldContainer>
+                                        <ErrorMessageDisplay
+                                            hasError={!isUniqueUser}
+                                            errorMessage={"Username must be unique!"}
+                                        />
+                                    </div>
+                                }
+                            >
+                            </InputField>
+                        </FieldContainer>
 
 
                         <FieldContainer labelText={"E-mail"}>
@@ -143,15 +150,63 @@ function SignUpPage(props: any) {
                             </InputField>
                         </FieldContainer>
 
-                            <button type="submit">Submit</button>
-                        </Form>
-                    )}
-                </Formik>
-            </div>
-        );
+                        <button className="button is-link" type="submit">
+                            <strong>Sign Up!</strong>
+                        </button>
+                    </Form>
+                )}
+            </Formik>
+
+            <a className="button is-primary is-light" href={"/"}>
+                <span className="icon is-small">
+                    <i className="fas fa-chevron-left"></i>
+                </span>
+                <span>Return to Main Page</span>
+            </a>
+        </div>
+    );
+
+
+    function attemptToSubmit(values: FormikValues) {
+
+        let clientsideData = {
+            account: values.username,
+            pass: btoa(values.password)
+        }
+        doPostAndProcessResponse(
+            'http://localhost:8080/api/signup',
+            values,
+            response => handleSignupResponse(response, clientsideData)
+        )
+
+
+    }
+
+
+    function handleSignupResponse(
+        response: Response,
+        dataToPersist: { pass: string; account: any },
+    ) {
+
+        switch (response.status) {
+            case 403:
+                setIsUniqueUser(false);
+                break;
+            case 400:
+                window.alert('Could not fulfill request!');
+                break;
+            case 201:
+            case 200:
+                localStorage.setItem('sweetEclipse', JSON.stringify(dataToPersist))
+                browserHistory.push('/')
+                break;
+            default:
+                window.alert('Something went wrong...');
+                browserHistory.push('/');
+        }
+
     }
 }
-
 
 
 export default SignUpPage;
