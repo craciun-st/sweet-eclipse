@@ -16,3 +16,23 @@ export function doGet(
 
 }
 
+export function doPostAndProcessResponse(
+    url: string,
+    bodyObj: any,
+    callback: (response: Response) => void
+) {
+    return fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'omit',
+        headers: {
+            'Accept': '*/*',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyObj)
+    })
+        .then(response => callback(response))
+        .catch(err => (console.log("Error while POST at " + url + ": " + err)));
+}
+
+
