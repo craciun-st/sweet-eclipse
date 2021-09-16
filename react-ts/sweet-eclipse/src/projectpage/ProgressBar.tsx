@@ -1,8 +1,9 @@
 import React from 'react';
+import {DEFAULT_PP_ELEMENT_WIDTH} from "./ProjectPage";
 
 function ProgressBar(props: any) {
     const ProgressBarContainerStyle = {
-        width: props.width ? props.width : "55vw"
+        width: props.width ? props.width : DEFAULT_PP_ELEMENT_WIDTH
     };
 
 

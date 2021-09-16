@@ -1,8 +1,9 @@
 import React from 'react';
+import {DEFAULT_PP_ELEMENT_WIDTH} from "./ProjectPage";
 
 function BigImage(props: any) {
     const bigImageContainerStyle = {
-        width: props.width ? props.width : "55vw"
+        width: props.width ? props.width : DEFAULT_PP_ELEMENT_WIDTH
     };
     return (
         <div style={bigImageContainerStyle}>
