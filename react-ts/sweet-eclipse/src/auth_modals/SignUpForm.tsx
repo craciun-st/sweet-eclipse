@@ -9,6 +9,7 @@ import {doPostAndProcessResponse} from "../util/Fetching";
 import {useHistory} from "react-router-dom";
 
 import {atom, useAtom} from "jotai";
+import {SignUpFormMap} from "../ts-declarations/SignUpForm";
 
 
 export const shouldSucceedSignUp = atom(true);
@@ -36,20 +37,20 @@ function SignUpPage(props: any) {
     const [isUniqueUser, setIsUniqueUser] = useAtom(shouldSucceedSignUp);
     const browserHistory = useHistory();
 
-
+    const initialMap: SignUpFormMap = {
+        username: '',
+        email: '',
+        password: '',
+        passwordConfirmation: ''
+    }
 
 
     return (
         <div>
-            <h1>Signup</h1>
+
 
             <Formik
-                initialValues={{
-                    username: '',
-                    email: '',
-                    password: '',
-                    passwordConfirmation: ''
-                }}
+                initialValues={initialMap}
                 validationSchema={SignupSchema}
                 onSubmit={values => attemptToSubmit(values)}
             >
@@ -157,12 +158,7 @@ function SignUpPage(props: any) {
                 )}
             </Formik>
 
-            <a className="button is-primary is-light" href={"/"}>
-                <span className="icon is-small">
-                    <i className="fas fa-chevron-left"></i>
-                </span>
-                <span>Return to Main Page</span>
-            </a>
+
         </div>
     );
 
@@ -209,4 +205,4 @@ function SignUpPage(props: any) {
 }
 
 
-export default SignUpPage;
+export default SignUpForm;
