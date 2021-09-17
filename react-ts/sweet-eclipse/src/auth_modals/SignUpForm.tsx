@@ -33,7 +33,9 @@ const SignupSchema = Yup.object().shape({
 
 
 
-function SignUpPage(props: any) {
+function SignUpForm(props: {
+    onSuccessfulCreate?: (dataToPersist: {} ) => void
+}) {
     const [isUniqueUser, setIsUniqueUser] = useAtom(shouldSucceedSignUp);
     const browserHistory = useHistory();
 
@@ -52,7 +54,7 @@ function SignUpPage(props: any) {
             <Formik
                 initialValues={initialMap}
                 validationSchema={SignupSchema}
-                onSubmit={values => attemptToSubmit(values)}
+                onSubmit={(values, {resetForm}) => attemptToSubmit(values, resetForm)}
             >
                 {({errors, touched}) => (
 
@@ -163,7 +165,9 @@ function SignUpPage(props: any) {
     );
 
 
-    function attemptToSubmit(values: FormikValues) {
+    function attemptToSubmit(
+        values: FormikValues,
+        resetForm: (nextState?: any) => void) {
 
         let clientsideData = {
             account: values.username,
@@ -172,16 +176,19 @@ function SignUpPage(props: any) {
         doPostAndProcessResponse(
             'http://localhost:8080/api/signup',
             values,
-            response => handleSignupResponse(response, clientsideData)
+            response => handleSignupResponse(response, clientsideData, resetForm)
         )
 
 
     }
 
 
+
+
     function handleSignupResponse(
         response: Response,
         dataToPersist: { pass: string; account: any },
+        resetForm: (nextState?: SignUpFormMap) => void
     ) {
 
         switch (response.status) {
@@ -193,14 +200,27 @@ function SignUpPage(props: any) {
                 break;
             case 201:
             case 200:
-                localStorage.setItem('sweetEclipse', JSON.stringify(dataToPersist))
-                browserHistory.push('/')
+                if (props.onSuccessfulCreate) {
+                    props.onSuccessfulCreate(dataToPersist)
+                    resetForm(initialMap)
+                    setIsUniqueUser(true)
+                } else {
+                    defaultSuccessHandler(dataToPersist)
+                    resetForm(initialMap)
+                    setIsUniqueUser(true)
+                }
                 break;
             default:
                 window.alert('Something went wrong...');
                 browserHistory.push('/');
         }
 
+    }
+
+    function defaultSuccessHandler(dataToPersist: { pass: string; account: any }) {
+        localStorage.setItem('sweetEclipse', JSON.stringify(dataToPersist))
+
+        browserHistory.push('/')
     }
 }
 
