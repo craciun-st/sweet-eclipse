@@ -1,12 +1,12 @@
 import React from 'react';
-import SignUpButton from "./SignUpButton";
 import LoginButton from "./LoginButton";
+import SignUpButton from "./SignUpButton";
 
 function AuthenticationContainer(props: any) {
     return (
         <div className="buttons">
-            <SignUpButton />
-            <LoginButton />
+            <SignUpButton>Sign Up</SignUpButton>
+            <LoginButton/>
         </div>
     );
 }

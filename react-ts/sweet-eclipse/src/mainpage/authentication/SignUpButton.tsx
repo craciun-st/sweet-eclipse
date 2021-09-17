@@ -13,7 +13,7 @@ function SignUpButton(props: any) {
     }
     return (
         <div>
-            <button className="button is-primary is-light" onClick={launchSignUpModal}>
+            <button className="button is-primary" onClick={launchSignUpModal}>
                 <strong>{props.children}</strong>
             </button>
             <SignUpModal isActive={shouldDisplayModal}/>

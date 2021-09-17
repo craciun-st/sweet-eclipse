@@ -153,7 +153,7 @@ function SignUpForm(props: {
                             </InputField>
                         </FieldContainer>
 
-                        <button className="button is-link" type="submit">
+                        <button className="button is-link is-large" type="submit">
                             <strong>Sign Up!</strong>
                         </button>
                     </Form>
