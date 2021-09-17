@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 
 import {doGet} from "../util/Fetching";
 import {Project} from "../ts-declarations/Project";
-
+import {getFirstSentenceUpTo} from "../util/StringUtils";
 
 
 function MainPage(props: any) {
@@ -31,17 +31,19 @@ function MainPage(props: any) {
 
     return (
         <div>
-            <Navbar />
+            <Navbar/>
 
 
             <div className="mainPageContainer">
                 {projects.map((project, index) => (
                         <Card
                             key={index}
-                            imgSource={project.images? project.images[0].uri : ""}
+                            imgSource={project.images ? project.images[0].uri : ""}
                             title={project.title}
-                            titleUrlRedirect={'/project/'+project.id}
-                            description={project.description}
+                            titleUrlRedirect={'/project/' + project.id}
+                            description={
+                                project.description !== undefined ? getFirstSentenceUpTo(project.description, 128) : ""
+                            }
                         />
                     )
                 )
@@ -103,8 +105,7 @@ function MainPage(props: any) {
             </div>
 
 
-
-            <Footer />
+            <Footer/>
         </div>
     );
 }
