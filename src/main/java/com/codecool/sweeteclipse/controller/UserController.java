@@ -16,6 +16,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import static com.codecool.sweeteclipse.controller.DonationController.getFieldToErrorMap;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import javax.validation.Valid;
@@ -78,14 +79,7 @@ public class UserController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach(
-                (error) -> {
-                    String fieldName = ((FieldError) error).getField();
-                    String errorMessage = error.getDefaultMessage();
-                    errors.put(fieldName, errorMessage);
-                }
-        );
-        return errors;
+        return getFieldToErrorMap(ex);
     }
+
 }

@@ -1,13 +1,14 @@
 import React from 'react';
 import {atom, useAtom} from "jotai";
 import SignUpForm from "./SignUpForm";
-import BackToMainButton from "../general_buttons/BackToMainButton";
+import BackToMainButton from "../../general_buttons/BackToMainButton";
+import {isLoggedInAtom} from "../../App";
 
 export const isSignUpModalActive = atom(false)
 
 function SignUpModal(props: any) {
     const [isActive, setIsActive] = useAtom(isSignUpModalActive)
-
+    const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
 
     function closeModal() {
         setIsActive(false)
@@ -16,6 +17,7 @@ function SignUpModal(props: any) {
     function handleSubmitSuccess(data: {}) {
         localStorage.setItem('sweetEclipse', JSON.stringify(data));
         closeModal();
+        setIsLoggedIn(true);
     }
 
     return (
