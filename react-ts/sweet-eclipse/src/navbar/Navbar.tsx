@@ -10,7 +10,7 @@ function Navbar(props: any) {
         <div>
             <nav className="navbar" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand">
-                    <BrandLogo urlRedirect="/" imgSource="/logo.png" />
+                    <BrandLogo urlRedirect="/" imgSource="/new_logo.png" />
                     <NavbarBurger idForExpandedMenu="navbarBasicExample" />
                 </div>
 
