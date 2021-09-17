@@ -1,10 +1,10 @@
 import React from 'react';
 import {Form, Formik, FormikValues} from 'formik';
 import * as Yup from 'yup';
-import FieldContainer from "./form/FieldContainer";
-import InputField from "./form/InputField";
-import ValidationIcon from "./form/ValidationIcon";
-import ErrorMessageDisplay from "./form/ErrorMessageDisplay";
+import FieldContainer from "./form_elements/FieldContainer";
+import InputField from "./form_elements/InputField";
+import ValidationIcon from "./signup/ValidationIcon";
+import ErrorMessageDisplay from "./form_elements/ErrorMessageDisplay";
 import {doPostAndProcessResponse} from "../util/Fetching";
 import {useHistory} from "react-router-dom";
 
