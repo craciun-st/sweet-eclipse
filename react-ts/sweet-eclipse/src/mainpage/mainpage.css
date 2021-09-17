@@ -10,11 +10,15 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    row-gap: 10px;
+    row-gap: 1rem;
 }
 
 .cardSizeAdjust {
     flex-basis: 30%;
+}
+
+.welcomeMessage {
+    margin-right: 0.25rem;
 }
 
 .card div > img {
