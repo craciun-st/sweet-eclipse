@@ -5,7 +5,7 @@ function Footer(props: any) {
         <div>
             <footer className="specialFooter container is-fluid">
                 <div>Thank you for visiting us!</div>
-                <div>Sweet Eclipse 2021</div>
+                <div>Agaclipsia 2021</div>
             </footer>
         </div>
     );
