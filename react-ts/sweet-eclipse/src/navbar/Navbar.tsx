@@ -3,7 +3,7 @@ import BrandLogo from "./BrandLogo";
 import NavbarBurger from "./NavbarBurger";
 import DropdownMenu from "./DropdownMenu";
 import NavbarItem from "./NavbarItem";
-import AuthenticationContainer from "../mainpage/authentication/AuthenticationContainer";
+import AuthenticationContainer from "../mainpage/auth_elements/AuthenticationContainer";
 
 function Navbar(props: any) {
     return (
