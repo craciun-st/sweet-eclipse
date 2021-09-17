@@ -108,7 +108,7 @@ function ProjectPage(props: any) {
                         <div className="title is-3">
                             {project.title}
                         </div>
-                        <div className="content is-small">
+                        <div className="content">
                             {project.description}
                         </div>
                     </div>
