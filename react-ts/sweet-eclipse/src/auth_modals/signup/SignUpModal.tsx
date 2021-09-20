@@ -1,10 +1,8 @@
 import React from 'react';
-import {atom, useAtom} from "jotai";
+import {useAtom} from "jotai";
 import SignUpForm from "./SignUpForm";
 import BackToMainButton from "../../general_buttons/BackToMainButton";
-import {isLoggedInAtom} from "../../App";
-
-export const isSignUpModalActive = atom(false)
+import {isLoggedInAtom, isSignUpModalActive} from "../../GlobalAtoms";
 
 function SignUpModal(props: any) {
     const [isActive, setIsActive] = useAtom(isSignUpModalActive)
