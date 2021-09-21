@@ -13,10 +13,17 @@ function LoginButton(props: any) {
         buttonStyle = {display: 'none'}
     }
 
+    function launchLoginModal() {
+        setShouldDisplayModal(true);
+    }
+
     return (
-        <a className="button is-light" style={buttonStyle}>
-            Log in
-        </a>
+        <div>
+            <button className="button is-light" style={buttonStyle} onClick={launchLoginModal}>
+                Log in
+            </button>
+            <LoginModal isActive={shouldDisplayModal} />
+        </div>
     );
 }
 
