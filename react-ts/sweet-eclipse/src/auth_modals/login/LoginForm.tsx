@@ -113,13 +113,7 @@ function LoginForm(props: {
             account: values.username,
             pass: btoa(values.password)
         }
-        // const requestConfig: AxiosRequestConfig = {
-        //     mode: 'cors',
-        // }
-        // // axios.interceptors.response.eject(useGenericUnauthorizedAlert);
-        // axios.get('http://localhost:8080/api/login')
-        //     .then( (response: AxiosResponse<any>) => handleLoginResponse(response, clientsideData, resetForm))
-        //     .catch((error) => {console.error(error.message)})
+        
 
         doGetWithBasicAuthCredentials(
             'http://localhost:8080/api/login',
