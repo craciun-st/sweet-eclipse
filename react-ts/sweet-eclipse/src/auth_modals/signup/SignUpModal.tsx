@@ -30,8 +30,6 @@ function SignUpModal(props: any) {
                     <SignUpForm onSuccessfulCreate={(data => handleSubmitSuccess(data))}/>
                 </section>
                 <footer className="modal-card-foot">
-                    {/*<button className="button is-success">Save changes</button>*/}
-                    {/*<button className="button" onClick={closeModal}>Cancel</button>*/}
                     <BackToMainButton classNameAddon={" is-outlined"} onClick={closeModal}/>
                 </footer>
             </div>
