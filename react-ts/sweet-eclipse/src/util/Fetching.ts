@@ -16,6 +16,25 @@ export function doGet(
 
 }
 
+export function doGetWithBasicAuthCredentials(
+    url: string,
+    authHeader: string,
+    callback: (response: any) => void,
+) {
+    return fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+            'Accept': '*/*',
+            'Authorization': authHeader
+        }
+    })
+        .then(response => callback(response))
+        .catch(err => (console.log("Error while BasicAuth GET from "+url+": "+err.message)))
+
+}
+
 export function doPostAndProcessResponse(
     url: string,
     bodyObj: any,
