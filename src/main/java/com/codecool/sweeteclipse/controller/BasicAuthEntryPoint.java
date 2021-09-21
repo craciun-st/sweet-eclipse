@@ -13,7 +13,7 @@ public class BasicAuthEntryPoint extends BasicAuthenticationEntryPoint {
 
     @Override
     public void afterPropertiesSet() {
-        setRealmName("Sweet Eclipse");
+        setRealmName("Agaclipsia");
         super.afterPropertiesSet();
     }
 
