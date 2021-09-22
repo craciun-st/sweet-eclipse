@@ -52,6 +52,14 @@ public class DonationController {
         anonUser.donate(amountToDonate, targetProject, donationManagementService);
     }
 
+    @PostMapping("/api/donate/as/user")
+    public void donateAsUser(@Valid @RequestBody AnonDonationDto donationRequest) {
+        User user = userManagementService.getLocalContextUser(SecurityContextHolder.getContext());
+        double amountToDonate = donationRequest.getAmount();
+        Long projectId = donationRequest.getProjectId();
+        Project targetProject = projectRepo.findById(projectId).orElseThrow(ObjectIdNotFoundException::new);
+        user.donate(amountToDonate, targetProject, donationManagementService);
+    }
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
