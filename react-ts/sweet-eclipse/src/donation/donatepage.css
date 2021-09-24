@@ -1,0 +1,12 @@
+.donateContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.darkSideBar {
+    background-color: black;
+}
+
+.donateFormMainBar {
+    margin-left: 1rem;
+}
