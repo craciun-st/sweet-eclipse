@@ -11,7 +11,7 @@ function ProgressBar(props: any) {
         <div style={ProgressBarContainerStyle}>
             <div className="is-flex is-justify-content-space-between">
                 <div className="is-size-4">
-                    <strong>{props.currentFunds}</strong> <i className="fas fa-piggy-bank"></i>
+                    <strong>{props.currentFunds}</strong> <i >EUR</i>
                 </div>
                 <div className="is-size-5">
                     <strong>{props.nrDonors}</strong> donors
@@ -19,7 +19,7 @@ function ProgressBar(props: any) {
             </div>
             <progress className="progress is-info outlinedProgressBar" value={props.percentValue} max="100">{props.percentValue}%</progress>
             <div className="is-size-6">
-                {props.percentValue}% of <i className="fas fa-piggy-bank"></i> {props.fundingGoal} Goal
+                {props.percentValue}% of <i >EUR</i> {props.fundingGoal} Goal
             </div>
         </div>
     );

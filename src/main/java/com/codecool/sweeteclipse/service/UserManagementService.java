@@ -1,5 +1,6 @@
 package com.codecool.sweeteclipse.service;
 
+import com.codecool.sweeteclipse.controller.exceptions.ObjectIdNotFoundException;
 import com.codecool.sweeteclipse.model.authentication.SignUpRequest;
 import com.codecool.sweeteclipse.model.user.PublicUserData;
 import com.codecool.sweeteclipse.model.user.User;
@@ -7,6 +8,7 @@ import com.codecool.sweeteclipse.model.user.UserRole;
 import com.codecool.sweeteclipse.repository.UserRepository;
 import com.codecool.sweeteclipse.service.exceptions.UserAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -58,5 +60,11 @@ public class UserManagementService {
                 user.getName(),
                 user.getRoles()
         );
+    }
+
+    public User getLocalContextUser(SecurityContext context) throws ObjectIdNotFoundException {
+        String usernameFromHeader = context.getAuthentication().getName();
+        User user = userRepo.findUserByName(usernameFromHeader).orElseThrow(ObjectIdNotFoundException::new);
+        return user;
     }
 }

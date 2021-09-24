@@ -1,7 +1,7 @@
 import React from 'react';
 import {useAtom} from "jotai";
-import {isLoggedInAtom} from "../../App";
 import {ClientPersistedData} from "../../ts-declarations/ClientPersistedData";
+import {isLoggedInAtom} from "../../GlobalAtoms";
 
 function WelcomeMessage(props: any) {
     const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)

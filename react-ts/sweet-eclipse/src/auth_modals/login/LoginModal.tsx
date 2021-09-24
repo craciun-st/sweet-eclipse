@@ -1,11 +1,10 @@
 import React from 'react';
 import {useAtom} from "jotai";
-import SignUpForm from "./SignUpForm";
-import BackToMainButton from "../../general_buttons/BackToMainButton";
-import {isLoggedInAtom, isSignUpModalActive} from "../../GlobalAtoms";
+import LoginForm from "./LoginForm";
+import {isLoggedInAtom, isLoginModalActive} from "../../GlobalAtoms";
 
-function SignUpModal(props: any) {
-    const [isActive, setIsActive] = useAtom(isSignUpModalActive)
+function LoginModal(props: any) {
+    const [isActive, setIsActive] = useAtom(isLoginModalActive)
     const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)
 
     function closeModal() {
@@ -23,18 +22,18 @@ function SignUpModal(props: any) {
             <div className="modal-background"/>
             <div className="modal-card">
                 <header className="modal-card-head">
-                    <p className="modal-card-title">Sign Up</p>
+                    <p className="modal-card-title">Login</p>
                     <button className="delete" aria-label="close" onClick={closeModal}/>
                 </header>
                 <section className="modal-card-body">
-                    <SignUpForm onSuccessfulCreate={(data => handleSubmitSuccess(data))}/>
+                    <LoginForm onSuccessfulCreate={(data => handleSubmitSuccess(data))}/>
                 </section>
-                <footer className="modal-card-foot">
-                    <BackToMainButton classNameAddon={" is-outlined"} onClick={closeModal}/>
-                </footer>
+                {/*<footer className="modal-card-foot">*/}
+                {/*    <BackToMainButton classNameAddon={" is-outlined"} onClick={closeModal}/>*/}
+                {/*</footer>*/}
             </div>
         </div>
     );
 }
 
-export default SignUpModal;
+export default LoginModal;
