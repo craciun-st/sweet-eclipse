@@ -19,6 +19,7 @@ Technologies used
 
 - Java & Spring Boot for the server/API
 - React.js for the front-end (with Bulma CSS framework)
+- TypeScript for better type safety with JS code
 - MySQL for persisting data
 
 
