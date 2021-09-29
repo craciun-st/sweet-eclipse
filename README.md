@@ -2,8 +2,9 @@ Agaclipsia ![App-logo](./docs/img/logo.png)
 ==========
 
 The project will be a crowdfunding platform for charitable and donation-worthy projects.
+
 Users will be able to both donate and create projects (charitable initiatives).
-Both anonymous and public (visible to all) will be supported.
+Both anonymous and public (visible to all) donations will be supported.
 
 
 Example (Displaying all active projects)
