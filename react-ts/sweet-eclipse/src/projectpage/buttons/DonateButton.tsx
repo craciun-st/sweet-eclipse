@@ -2,7 +2,13 @@ import React from 'react';
 import FancyButton from "./FancyButton";
 import {useHistory} from "react-router-dom";
 import {useAtom} from "jotai";
-import {idForDonationIntent, imageUriForDonationIntent, titleForDonationIntent} from "../../GlobalAtoms";
+import {
+    idForDonationIntent,
+    imageUriForDonationIntent,
+    isDonateModalActive,
+    titleForDonationIntent
+} from "../../GlobalAtoms";
+import DonateModal from "../../donation/DonateModal";
 
 function DonateButton(props: {
         forProjectTitle: string;
@@ -14,13 +20,14 @@ function DonateButton(props: {
     const [titleForProject, setTitleForProject] = useAtom(titleForDonationIntent);
     const [imageUriForProject, setImageUriForProject] = useAtom(imageUriForDonationIntent);
     const [idForProject, setIdForProject] = useAtom(idForDonationIntent);
+    const [showDonateModal, setShowDonateModal] = useAtom(isDonateModalActive)
     const browserHistory = useHistory();
 
     function handleClick(event: any) {
         setTitleForProject(props.forProjectTitle);
         setImageUriForProject(props.forProjectImage);
         setIdForProject(props.forProjectId);
-        browserHistory.push("/donate")
+        setShowDonateModal(true)
     }
 
     return (
@@ -32,7 +39,7 @@ function DonateButton(props: {
             >
                 Donate!
             </FancyButton>
-
+            <DonateModal/>
             </div>
 
     );
