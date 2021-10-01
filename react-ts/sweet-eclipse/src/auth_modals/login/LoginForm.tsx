@@ -8,6 +8,7 @@ import ValidationIcon from "../form_elements/ValidationIcon";
 import ErrorMessageDisplay from "../form_elements/ErrorMessageDisplay";
 import {getBasicAuthHeader} from "../../services/RequestResponseHandlers";
 import {doGetWithBasicAuthCredentials} from "../../util/Fetching";
+import {SERVER_URL} from "../../index";
 
 
 
@@ -116,7 +117,7 @@ function LoginForm(props: {
         
 
         doGetWithBasicAuthCredentials(
-            'http://localhost:8080/api/login',
+            SERVER_URL+'/api/login',
             getBasicAuthHeader(clientsideData),
             (response) => { handleLoginResponse(response, clientsideData, resetForm) }
         )

@@ -8,6 +8,7 @@ import {useEffect, useState} from "react";
 import {doGet} from "../util/Fetching";
 import {Project} from "../ts-declarations/Project";
 import {getFirstSentenceUpTo} from "../util/StringUtils";
+import {SERVER_URL} from "../index";
 
 
 function MainPage(props: any) {
@@ -18,7 +19,7 @@ function MainPage(props: any) {
     useEffect(
         () => {
             doGet(
-                'http://localhost:8080/api/projects',
+                SERVER_URL + '/api/projects',
                 (data: Project[]) => setProjects(data)
             )
             return () => {

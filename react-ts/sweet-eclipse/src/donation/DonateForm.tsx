@@ -1,6 +1,12 @@
 import React from 'react';
 import {useAtom} from "jotai";
-import {idForDonationIntent, imageUriForDonationIntent, titleForDonationIntent} from "../GlobalAtoms";
+import {
+    amountToDonate,
+    idForDonationIntent,
+    imageUriForDonationIntent,
+    localClientSecret,
+    titleForDonationIntent
+} from "../GlobalAtoms";
 import {useHistory} from "react-router-dom";
 import {Form, Formik, FormikValues} from "formik";
 import FieldContainer from "../auth_modals/form_elements/FieldContainer";
@@ -10,12 +16,15 @@ import ErrorMessageDisplay from "../auth_modals/form_elements/ErrorMessageDispla
 import {doGetWithBasicAuthCredentials, doPostAndProcessResponse} from "../util/Fetching";
 import {getBasicAuthHeader} from "../services/RequestResponseHandlers";
 import * as Yup from "yup";
+import {SERVER_URL} from "../index";
 
 function DonateForm(props: any) {
 
     const [titleForProject, setTitleForProject] = useAtom(titleForDonationIntent);
     const [imageUriForProject, setImageUriForProject] = useAtom(imageUriForDonationIntent);
     const [idForProject, setIdForProject] = useAtom(idForDonationIntent);
+    const [amountForProject, setAmountForProject] = useAtom(amountToDonate)
+    const [clientSecret, setClientSecret] = useAtom(localClientSecret)
     const browserHistory = useHistory();
 
     const initialMap: { amount: number} = {
@@ -72,7 +81,7 @@ function DonateForm(props: any) {
 
 
                         <button className="button is-danger is-large" type="submit">
-                            <strong>Mock payment</strong>
+                            <strong>Proceed to payment details</strong>
                         </button>
                     </Form>
                 )}
@@ -92,10 +101,12 @@ function DonateForm(props: any) {
             projectId: idForProject
         }
 
+        setAmountForProject(values.amount)
+
         // console.log(clientsideData)
         
         doPostAndProcessResponse(
-            'http://localhost:8080/api/donate/as/anon',
+            SERVER_URL+'/api/donate/as/anon',
             clientsideData,
             (response) => { handleDonateResponse(response, {}, resetForm) }
         )
@@ -114,22 +125,34 @@ function DonateForm(props: any) {
         switch (response.status) {
             case 401:
                 alert("Unauthorized credentials!")
+                setAmountForProject(0.00);
                 resetForm(initialMap)
                 break;
             case 400:
                 window.alert('Could not fulfill request!');
+                setAmountForProject(0.00)
                 break;
             case 200:
                 if (props.onSuccessfulCreate) {
-                    props.onSuccessfulCreate(dataToPersist)
+                    props.onSuccessfulCreate();
+                    response.json().then((data: any) => {
+                        setClientSecret(data.client_secret)
+                    })
                     resetForm(initialMap)
+                    browserHistory.push("/donate")
                 } else {
                     resetForm(initialMap)
-                    browserHistory.push("/project/"+idForProject)
+                    response.json().then((data: any) => {
+                        setClientSecret(data.client_secret)
+                    })
+                    resetForm(initialMap)
+                    browserHistory.push("/donate")
+                    // browserHistory.push("/project/"+idForProject)
                 }
                 break;
             default:
                 window.alert('Something went wrong...');
+                setAmountForProject(0.00)
                 browserHistory.push('/');
         }
 

@@ -13,6 +13,7 @@ import SocialMediaContainer from "./SocialMediaContainer";
 import ShareButton from "./buttons/ShareButton";
 import TagContainer from "./tags/TagContainer";
 import DonateButton from "./buttons/DonateButton";
+import {SERVER_URL} from "../index";
 
 export const DEFAULT_PP_ELEMENT_WIDTH = "55vw";
 
@@ -57,7 +58,7 @@ function ProjectPage(props: any) {
     useEffect(
         () => {
             doGet(
-                'http://localhost:8080/api/project/' + id,
+                SERVER_URL + '/api/project/' + id,
                 (data: Project) => {
                     if (data.id && data.title) {
                         setProject(data)

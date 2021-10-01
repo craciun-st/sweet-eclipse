@@ -10,6 +10,7 @@ import {useHistory} from "react-router-dom";
 
 import {atom, useAtom} from "jotai";
 import {SignUpFormMap} from "../../ts-declarations/SignUpForm";
+import {SERVER_URL} from "../../index";
 
 
 export const shouldSucceedSignUp = atom(true);
@@ -174,7 +175,7 @@ function SignUpForm(props: {
             pass: btoa(values.password)
         }
         doPostAndProcessResponse(
-            'http://localhost:8080/api/signup',
+            SERVER_URL+'/api/signup',
             values,
             response => handleSignupResponse(response, clientsideData, resetForm)
         )
