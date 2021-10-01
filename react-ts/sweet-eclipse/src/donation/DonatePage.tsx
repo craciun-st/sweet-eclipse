@@ -55,19 +55,19 @@ function DonatePage(props: any) {
         if (result.error) {
             // Show error to your customer (e.g., insufficient funds)
             alert("Sadly, payment has failed");
-
+            setClientSecret("")
             console.log(result.error.message);
         } else {
             // The payment has been processed!
             if (result.paymentIntent.status === 'succeeded') {
                 alert('Payment has succeeded!');
-
+                setClientSecret("")
             }
         }
     };
 
 
-    if (!titleForProject || !idForProject) {
+    if (!titleForProject || !idForProject || (clientSecret === "")) {
         return (
             <div>
                 Sorry, can't donate right now!
