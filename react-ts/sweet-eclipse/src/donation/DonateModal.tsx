@@ -24,7 +24,7 @@ function DonateModal(props: any) {
     function handleSubmitSuccess() {
 
         closeModal();
-        browserHistory.push("/donate")
+
     }
 
     return (
@@ -32,7 +32,7 @@ function DonateModal(props: any) {
             <div className="modal-background"/>
             <div className="modal-card">
                 <header className="modal-card-head">
-                    <p className="modal-card-title">Login</p>
+                    <p className="modal-card-title">Donate</p>
                     <button className="delete" aria-label="close" onClick={closeModal}/>
                 </header>
                 <section className="modal-card-body">
