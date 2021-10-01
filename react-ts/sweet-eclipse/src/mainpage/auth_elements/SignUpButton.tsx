@@ -1,7 +1,7 @@
 import React from 'react';
-import SignUpModal, {isSignUpModalActive} from "../../auth_modals/signup/SignUpModal";
+import SignUpModal from "../../auth_modals/signup/SignUpModal";
 import {useAtom} from "jotai";
-import {isLoggedInAtom} from "../../App";
+import {isLoggedInAtom, isSignUpModalActive} from "../../GlobalAtoms";
 
 
 

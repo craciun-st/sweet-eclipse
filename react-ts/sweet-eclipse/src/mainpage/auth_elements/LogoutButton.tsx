@@ -1,6 +1,6 @@
 import React from 'react';
 import {useAtom} from "jotai";
-import {isLoggedInAtom} from "../../App";
+import {isLoggedInAtom} from "../../GlobalAtoms";
 
 function LogoutButton(props: any) {
     const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom)

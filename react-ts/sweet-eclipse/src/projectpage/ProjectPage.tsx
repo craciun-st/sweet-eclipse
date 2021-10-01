@@ -12,6 +12,7 @@ import {Project} from "../ts-declarations/Project";
 import SocialMediaContainer from "./SocialMediaContainer";
 import ShareButton from "./buttons/ShareButton";
 import TagContainer from "./tags/TagContainer";
+import DonateButton from "./buttons/DonateButton";
 
 export const DEFAULT_PP_ELEMENT_WIDTH = "55vw";
 
@@ -75,14 +76,14 @@ function ProjectPage(props: any) {
 
 
     percentValue = project.fundingGoal ? Math.trunc(project.currentFunds / project.fundingGoal * 100) : 0;
-
+    let projectMainImage = project.images ? project.images[0].uri : ""
     return (
         <div>
             <Navbar/>
             {project.status === "MISSING_INFO" ? "No such project!" : (
                 <div className={"projectPageContainer"}>
 
-                    <BigImage imgSource={project.images ? project.images[0].uri : ""}/>
+                    <BigImage imgSource={projectMainImage}/>
                     <ProgressBar
                         currentFunds={project.currentFunds}
                         fundingGoal={project.fundingGoal}
@@ -96,12 +97,11 @@ function ProjectPage(props: any) {
                     <br/>
 
                     <div style={{width: DEFAULT_PP_ELEMENT_WIDTH}}>
-                        <FancyButton
-                            classAddons={" is-link is-large is-fullwidth"}
-                            icon={"fas fa-piggy-bank"}
-                        >
-                            Donate!
-                        </FancyButton>
+                        <DonateButton
+                            forProjectTitle={project.title}
+                            forProjectImage={projectMainImage}
+                            forProjectId={project.id}
+                        />
 
                         <br/>
                         <br/>

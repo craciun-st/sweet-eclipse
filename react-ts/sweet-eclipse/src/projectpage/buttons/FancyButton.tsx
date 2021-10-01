@@ -5,7 +5,7 @@ export function FancyButton(props: any) {
     const iconClassname = props.icon ? props.icon : "fas fa-pen-fancy";
     return (
         <div>
-            <button className={"button" + classNameAddons}>
+            <button className={"button" + classNameAddons} onClick={props.onClick}>
                 <span className="icon">
                     <i className={iconClassname}/>
                 </span>
