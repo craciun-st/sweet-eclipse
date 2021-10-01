@@ -5,8 +5,10 @@
 
 .darkSideBar {
     background-color: black;
+    min-width: 10vw;
 }
 
 .donateFormMainBar {
     margin-left: 1rem;
+    min-width: 40vw;
 }
