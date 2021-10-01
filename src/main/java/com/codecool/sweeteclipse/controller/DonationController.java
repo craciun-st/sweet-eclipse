@@ -9,8 +9,15 @@ import com.codecool.sweeteclipse.repository.ProjectRepository;
 import com.codecool.sweeteclipse.repository.UserRepository;
 import com.codecool.sweeteclipse.service.DonationManagementService;
 import com.codecool.sweeteclipse.service.UserManagementService;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+import com.stripe.param.PaymentIntentCreateParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,6 +36,12 @@ public class DonationController {
     private DonationManagementService donationManagementService;
     private UserManagementService userManagementService;
 
+    Logger logger = LoggerFactory.getLogger(DonationController.class);
+
+
+    @Value("${stripe.apiKey}")
+    String stripeSecret;
+
     @Autowired
     public DonationController(
             UserRepository userRepo,
@@ -43,13 +56,41 @@ public class DonationController {
     }
 
     @PostMapping("/api/donate/as/anon")
-    public void donateAnonymously(@Valid @RequestBody AnonDonationDto donationRequest) {
-        User anonUser = userRepo.findFirstByRolesContains(UserRole.PLACEHOLDER_ANONYMOUS)
-                .orElseThrow( () -> {throw new RuntimeException("There is no Anonymous User in DB!");} );
+    public ResponseEntity< Map<String, String> > donateAnonymously(
+            @Valid @RequestBody AnonDonationDto donationRequest
+    ) {
+
         double amountToDonate = donationRequest.getAmount();
         Long projectId = donationRequest.getProjectId();
-        Project targetProject = projectRepo.findById(projectId).orElseThrow(ObjectIdNotFoundException::new);
-        anonUser.donate(amountToDonate, targetProject, donationManagementService);
+        String emailOrDefault = donationRequest.getEmailOrDefault();
+
+        Map<String, String> responseMap = new HashMap<>();
+        Map<String,String> metadata = new HashMap<>();
+        metadata.put("projectId", projectId.toString());
+
+        PaymentIntentCreateParams params =
+                PaymentIntentCreateParams.builder()
+                        .setAmount((long) Math.floor(amountToDonate*100))
+                        .setCurrency("eur")
+                        .addPaymentMethodType("card")
+                        .putAllMetadata(metadata)
+                        .setReceiptEmail(emailOrDefault)
+                        .build();
+        PaymentIntent intent = null;
+        try {
+            intent = PaymentIntent.create(params);
+        } catch (StripeException exception) {
+            logger.warn("Error while trying to donate " + amountToDonate +"EUR: " + exception.getMessage());
+            responseMap.put("error", "Could not finalize donation!");
+            return ResponseEntity.internalServerError().body(responseMap);
+        }
+
+        responseMap.put("client_secret", intent.getClientSecret());
+
+        return ResponseEntity.ok(responseMap);
+
+
+
     }
 
     @PostMapping("/api/donate/as/user")
