@@ -1,6 +1,12 @@
 import React from 'react';
 import {useAtom} from "jotai";
-import {idForDonationIntent, imageUriForDonationIntent, titleForDonationIntent} from "../GlobalAtoms";
+import {
+    amountToDonate,
+    idForDonationIntent,
+    imageUriForDonationIntent,
+    localClientSecret,
+    titleForDonationIntent
+} from "../GlobalAtoms";
 import {useHistory} from "react-router-dom";
 import {Form, Formik, FormikValues} from "formik";
 import FieldContainer from "../auth_modals/form_elements/FieldContainer";
@@ -16,6 +22,8 @@ function DonateForm(props: any) {
     const [titleForProject, setTitleForProject] = useAtom(titleForDonationIntent);
     const [imageUriForProject, setImageUriForProject] = useAtom(imageUriForDonationIntent);
     const [idForProject, setIdForProject] = useAtom(idForDonationIntent);
+    const [amountForProject, setAmountForProject] = useAtom(amountToDonate)
+    const [clientSecret, setClientSecret] = useAtom(localClientSecret)
     const browserHistory = useHistory();
 
     const initialMap: { amount: number} = {
@@ -92,6 +100,8 @@ function DonateForm(props: any) {
             projectId: idForProject
         }
 
+        setAmountForProject(values.amount)
+
         // console.log(clientsideData)
         
         doPostAndProcessResponse(
@@ -114,22 +124,34 @@ function DonateForm(props: any) {
         switch (response.status) {
             case 401:
                 alert("Unauthorized credentials!")
+                setAmountForProject(0.00);
                 resetForm(initialMap)
                 break;
             case 400:
                 window.alert('Could not fulfill request!');
+                setAmountForProject(0.00)
                 break;
             case 200:
                 if (props.onSuccessfulCreate) {
-                    props.onSuccessfulCreate(dataToPersist)
+                    props.onSuccessfulCreate();
+                    response.json().then((data: any) => {
+                        setClientSecret(data.client_secret)
+                    })
                     resetForm(initialMap)
+                    browserHistory.push("/donate")
                 } else {
                     resetForm(initialMap)
-                    browserHistory.push("/project/"+idForProject)
+                    response.json().then((data: any) => {
+                        setClientSecret(data.client_secret)
+                    })
+                    resetForm(initialMap)
+                    browserHistory.push("/donate")
+                    // browserHistory.push("/project/"+idForProject)
                 }
                 break;
             default:
                 window.alert('Something went wrong...');
+                setAmountForProject(0.00)
                 browserHistory.push('/');
         }
 
