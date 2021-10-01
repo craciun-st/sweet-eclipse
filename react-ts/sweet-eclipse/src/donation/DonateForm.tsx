@@ -80,7 +80,7 @@ function DonateForm(props: any) {
 
 
                         <button className="button is-danger is-large" type="submit">
-                            <strong>Mock payment</strong>
+                            <strong>Proceed to payment details</strong>
                         </button>
                     </Form>
                 )}
