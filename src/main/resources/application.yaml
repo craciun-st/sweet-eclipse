@@ -9,4 +9,8 @@ spring:
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
 
+stripe:
+  apiKey: ${STRIPE_API_SECRET_KEY}
+  webhookSecret: ${STRIPE_WEBHOOK_SECRET}
+
 
