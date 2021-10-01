@@ -16,6 +16,7 @@ import ErrorMessageDisplay from "../auth_modals/form_elements/ErrorMessageDispla
 import {doGetWithBasicAuthCredentials, doPostAndProcessResponse} from "../util/Fetching";
 import {getBasicAuthHeader} from "../services/RequestResponseHandlers";
 import * as Yup from "yup";
+import {SERVER_URL} from "../index";
 
 function DonateForm(props: any) {
 
@@ -105,7 +106,7 @@ function DonateForm(props: any) {
         // console.log(clientsideData)
         
         doPostAndProcessResponse(
-            'http://localhost:8080/api/donate/as/anon',
+            SERVER_URL+'/api/donate/as/anon',
             clientsideData,
             (response) => { handleDonateResponse(response, {}, resetForm) }
         )
