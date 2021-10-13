@@ -27,7 +27,7 @@ public class AmazonWebServicesConfig {
         AWSCredentials appCredentials = new BasicAWSCredentials(amazonAccessKey, amazonSecretKey);
 
         // AWS can get credentials that expire (e.g. key management systems)
-        // The CredentialsProvider interface has a No-Op in place of a refresh() in the static case
+        // The CredentialsProvider interface implementation has a No-Op in place of a refresh() in the static case
         AWSStaticCredentialsProvider simpleWayToGetAppCredentials = new AWSStaticCredentialsProvider(appCredentials);
 
         return AmazonS3ClientBuilder.standard()
