@@ -13,4 +13,10 @@ stripe:
   apiKey: ${STRIPE_API_SECRET_KEY}
   webhookSecret: ${STRIPE_WEBHOOK_SECRET}
 
+amazon:
+    accessKey: ${AWS_ACCESS_KEY}
+    secretKey: ${AWS_SECRET_KEY}
+    s3:
+      region: "eu-central-1"
+
 
