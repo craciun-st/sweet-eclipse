@@ -14,7 +14,6 @@ import javax.validation.constraints.NotBlank;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.codecool.sweeteclipse.util.StringUtils.getFileKey;
 
@@ -46,11 +45,17 @@ public class AmazonS3FileTransferService {
         if (maybeContentLength != null && maybeContentLength > 0) {
             fileObjMetaData.setContentLength(maybeContentLength);
         }
-        ;
+
+
 
         if (maybeMetaData != null) {
         maybeMetaData.forEach(
-                (key, value) -> fileObjMetaData.addUserMetadata(key, value)
+                (key, value) -> {
+                    if (key.equals("Content-Type")) { fileObjMetaData.setContentType(value); }
+                    else {
+                        fileObjMetaData.addUserMetadata(key, value);
+                    }
+                }
         );
     }
 
@@ -71,6 +76,10 @@ public class AmazonS3FileTransferService {
 
     public byte[] download(String fromFolder, @NotBlank String fromFilename) throws IOException {
         String fileKey = getFileKey(fromFolder, fromFilename, DEFAULT_UPLOAD_FOLDER_NAME);
+        return download(fileKey);
+    }
+
+    public byte[] download(String fileKey) throws IOException {
         try {
             S3Object fileObj = s3Interface.getObject(s3BucketName, fileKey);
 
@@ -101,7 +110,20 @@ public class AmazonS3FileTransferService {
     }
 
 
+    public String generateUri(String forFolder, String forFilename) {
+        String uri = String.format(
+                "https://%s.s3.%s.amazonaws.com/%s",
+                s3BucketName,
+                s3Interface.getRegion().toString(),
+                getFileKey(forFolder, forFilename, DEFAULT_UPLOAD_FOLDER_NAME)
+        );
+        return uri;
+    }
 
+    public String getFileKeyFromUrl(String amazonS3Url) {
+        String parsedUri = amazonS3Url.replaceAll("^https:\\/\\/\\w+.s3.[a-z0-9-]+.amazonaws.com\\/", "");
+        return parsedUri;
+    }
 
 
 
