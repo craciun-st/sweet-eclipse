@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ServerInit implements CommandLineRunner {
     @Value("${stripe.apiKey}")
-    String stripeSecret;
+    private String stripeSecret;
 
     @Override
     public void run(String... args) throws Exception {
