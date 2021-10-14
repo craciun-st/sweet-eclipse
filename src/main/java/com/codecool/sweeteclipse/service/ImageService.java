@@ -2,8 +2,11 @@ package com.codecool.sweeteclipse.service;
 
 import com.codecool.sweeteclipse.model.ImageData;
 import com.codecool.sweeteclipse.repository.ImageDataRepository;
+import com.codecool.sweeteclipse.service.exceptions.ImproperFileException;
+import com.codecool.sweeteclipse.service.exceptions.TempStorageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MimeType;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -12,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import static com.codecool.sweeteclipse.util.StringUtils.generateRandomAlphaNumericString;
 
 
 @Service
@@ -29,38 +34,27 @@ public class ImageService implements ImageServiceFacade {
     }
 
     @Override
-    public String getUriAfterSavingFile(MultipartFile fileFromMultipartForm, String forProjectName) throws IOException {
-        if (fileFromMultipartForm.isEmpty()) {
-            throw new IllegalArgumentException("Failed to upload empty file");
-        }
-
-        List<String> imageTypes = List.of(
-                "image/bmp",
-                "image/jpeg",
-                "image/png",
-                "image/svg+xml",
-                "image/tiff",
-                "image/webp"
-        );
-
-        if (!imageTypes.contains( fileFromMultipartForm.getContentType() )) {
-            throw new IllegalArgumentException("Will not upload a file without a proper image MIME-type");
-        }
+    public String getUriAfterSavingProperFile(MultipartFile properImageFile, String forProjectName) throws IOException {
 
         Map<String, String> metadata = addCustomImageTags(forProjectName);
-        metadata.put("Content-Type", fileFromMultipartForm.getContentType());
-        long fileLength = fileFromMultipartForm.getSize();
-        String projectFolder = String.format("project_%s", forProjectName.hashCode());
-        String fileName = UUID.randomUUID().toString();
+        MimeType fileMimeType = updateMetadataWithContentTypeAndReturnIt(metadata, properImageFile);
+        String fileName = UUID.randomUUID().toString() + "." + fileMimeType.getSubtype();
+
+        String codedProjectName = generateRandomAlphaNumericString((byte) 16, forProjectName.hashCode());
+        String projectFolder = String.format("project_%s", codedProjectName);
+
+
+        long fileLength = properImageFile.getSize();
+
         InputStream uploadStream;
         try {
-            uploadStream = fileFromMultipartForm.getInputStream();
+            uploadStream = properImageFile.getInputStream();
         } catch (IOException e) {
             String newMessage = String.format(
-                    "Internal error: Temp storage of multipart file of size %.3f MB failed",
+                    "Internal error: Could not access temp storage for file of size %.3f MB",
                     fileLength / (1024.0*1024.0)
             );
-            throw new IOException(newMessage);
+            throw new TempStorageException(newMessage);
         }
 
 
@@ -68,6 +62,17 @@ public class ImageService implements ImageServiceFacade {
         return awsFileTransfer.generateUri(projectFolder, fileName);
     }
 
+    private MimeType updateMetadataWithContentTypeAndReturnIt(
+            Map<String, String> metadata,
+            MultipartFile multipartFile
+    ) {
+        String fileMimeTypeString = multipartFile.getContentType();
+        MimeType fileMimeType = MimeType.valueOf(
+                fileMimeTypeString != null ? fileMimeTypeString : "application/octet-stream"
+        );
+        metadata.put("Content-Type", fileMimeTypeString);
+        return fileMimeType;
+    }
 
 
     @Override

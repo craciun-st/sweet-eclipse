@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public interface ImageServiceFacade {
 
-    String getUriAfterSavingFile(MultipartFile fileFromMultipartForm, String forProjectName) throws IOException;
+    String getUriAfterSavingProperFile(MultipartFile properImageFile, String forProjectName) throws IOException;
 
     byte[] getRawImageById(Long id) throws IOException;
 }
