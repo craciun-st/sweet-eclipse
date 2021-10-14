@@ -84,6 +84,12 @@ public class ImageService implements ImageServiceFacade {
         return fileMimeType;
     }
 
+    @Override
+    public void persistImageData(List<ImageData> imageDataList) {
+        imageDataRepo.saveAll(imageDataList);
+    }
+
+
 
     @Override
     public byte[] getRawImageById(Long id) throws IOException {

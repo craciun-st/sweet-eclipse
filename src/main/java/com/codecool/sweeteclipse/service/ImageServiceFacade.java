@@ -17,6 +17,8 @@ public interface ImageServiceFacade {
             String forProject
     ) throws ImproperFileException, IOException;
 
+    void persistImageData(List<ImageData> imageDataList);
+
     byte[] getRawImageById(Long id) throws IOException;
 
 

@@ -81,6 +81,8 @@ public class Project {
         this.images = new ArrayList<>();
         this.tags = new HashSet<>();
         this.donations = new HashSet<>();
+        this.nrDonors = 0;
+        this.currentFunds = 0.0;
     }
 
 
