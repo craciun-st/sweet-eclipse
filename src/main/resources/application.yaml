@@ -8,6 +8,11 @@ spring:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/${MYSQL_DATABASE}
     username: ${MYSQL_USERNAME}
     password: ${MYSQL_PASSWORD}
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 12MB
+      max-request-size: 60MB
 
 stripe:
   apiKey: ${STRIPE_API_SECRET_KEY}
