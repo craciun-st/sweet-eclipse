@@ -62,6 +62,16 @@ public class ImageService implements ImageServiceFacade {
         return awsFileTransfer.generateUri(projectFolder, fileName);
     }
 
+    @Override
+    public String getUriStringAfterSavingOrElseThrow(MultipartFile multipartFile, String forProject)
+            throws ImproperFileException, IOException {
+        throwIfFileIsEmpty(multipartFile);
+        throwIfNotAnImageType(multipartFile);
+        String uriString = getUriAfterSavingProperFile(multipartFile, forProject);
+
+        return uriString;
+    }
+
     private MimeType updateMetadataWithContentTypeAndReturnIt(
             Map<String, String> metadata,
             MultipartFile multipartFile
