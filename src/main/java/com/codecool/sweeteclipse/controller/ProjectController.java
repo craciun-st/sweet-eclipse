@@ -3,6 +3,7 @@ package com.codecool.sweeteclipse.controller;
 import com.codecool.sweeteclipse.controller.exceptions.GenericInternalServerError;
 import com.codecool.sweeteclipse.controller.exceptions.ObjectIdNotFoundException;
 import com.codecool.sweeteclipse.controller.exceptions.ThirdPartyServiceException;
+import com.codecool.sweeteclipse.model.ImageData;
 import com.codecool.sweeteclipse.model.Project;
 import com.codecool.sweeteclipse.repository.ProjectRepository;
 import com.codecool.sweeteclipse.service.ImageService;
@@ -23,6 +24,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.net.URI;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 
 @CrossOrigin(value = "http://localhost:3000", allowCredentials = "true")
 @RestController
@@ -56,6 +62,53 @@ public class ProjectController {
     public Project getProjectById(@PathVariable Long id) {
         return projectRepo.findById(id).orElseThrow(ObjectIdNotFoundException::new);
     }
+
+    @PostMapping("/api/projects")
+    public ResponseEntity<Project> addProject(
+            @RequestParam String title,
+            @RequestParam String description,
+            @RequestParam Double fundingGoal,
+            @RequestParam("files") MultipartFile[] multipartFiles
+    ) throws ImproperFileException, GenericInternalServerError, ThirdPartyServiceException {
+        List<String> imageUris = new ArrayList<>();
+
+        // MultipartFile -> uriString
+        for (MultipartFile file : multipartFiles) {
+            String uriString;
+            // remapping throws
+            try {
+                uriString = imageService.getUriStringAfterSavingOrElseThrow(file, title);
+            } catch (TempStorageException exception) {
+                logger.error(exception.getMessage());
+                throw new GenericInternalServerError();
+            } catch (IOException exception) {
+                logger.warn(exception.getMessage());
+                throw new ThirdPartyServiceException();
+            }
+            imageUris.add(uriString);
+        }
+
+
+        List<ImageData> images = imageUris.stream()
+                .map(uri -> new ImageData(uri, null))
+                .collect(Collectors.toList());
+
+        Project projectToSave = new Project(title,description,fundingGoal);
+
+        images.forEach(projectToSave::addImage);
+
+        Project createdProject = projectRepo.save(projectToSave);
+        imageService.persistImageData(images);
+
+        Long createdProjectId = createdProject.getId();
+        URI createdProjectUri = linkTo(
+                methodOn(ProjectController.class).getProjectById(createdProjectId)
+        ).toUri();
+
+        return ResponseEntity.created(createdProjectUri).body(createdProject);
+    }
+
+
     /**
      * Test endpoint for checking AWS upload
      * (Note: Images are tightly coupled to projects, so no need to have a separate controller)
