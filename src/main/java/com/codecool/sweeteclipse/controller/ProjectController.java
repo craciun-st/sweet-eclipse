@@ -1,21 +1,37 @@
 package com.codecool.sweeteclipse.controller;
 
+import com.codecool.sweeteclipse.controller.exceptions.GenericInternalServerError;
 import com.codecool.sweeteclipse.controller.exceptions.ObjectIdNotFoundException;
+import com.codecool.sweeteclipse.controller.exceptions.ThirdPartyServiceException;
 import com.codecool.sweeteclipse.model.Project;
 import com.codecool.sweeteclipse.repository.ProjectRepository;
+import com.codecool.sweeteclipse.service.ImageService;
+import com.codecool.sweeteclipse.service.ImageServiceFacade;
+import com.codecool.sweeteclipse.service.exceptions.ImproperFileException;
+import com.codecool.sweeteclipse.service.exceptions.TempStorageException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
+import java.net.URI;
+import java.util.*;
 
 @CrossOrigin(value = "http://localhost:3000", allowCredentials = "true")
 @RestController
 public class ProjectController {
 
     Logger logger = LoggerFactory.getLogger(ProjectController.class);
+
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private String MAX_UPLOAD_SIZE;
 
     private ProjectRepository projectRepo;
 
@@ -74,4 +90,23 @@ public class ProjectController {
         response.put("uri", createdImageLink.toASCIIString());
         return ResponseEntity.created(createdImageLink).body(response);
     }
+
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public Map<String, String> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("file", "File size too large! Should be less than " + MAX_UPLOAD_SIZE);
+        return response;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ImproperFileException.class)
+    public Map<String, String> handleImproperFileException(ImproperFileException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("file", ex.getMessage());
+        return response;
+    }
+
+
 }
