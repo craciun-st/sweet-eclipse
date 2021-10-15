@@ -50,15 +50,42 @@ public class DbInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        ImageData image1 = new ImageData("/image_0001.png", null);
-        ImageData image2 = new ImageData("/image_0002.png", null);
-        ImageData image3 = new ImageData("/image_0003.png", null);
-        ImageData image4 = new ImageData("/image_0004.png", null);
-        ImageData image5 = new ImageData("/image_0005.png", null);
-        ImageData image6 = new ImageData("/image_0006.png", null);
-        ImageData image7 = new ImageData("/image_0007.png", null);
-        ImageData image8 = new ImageData("/image_0008.png", null);
-        ImageData image9 = new ImageData("/image_0009.png", null);
+        ImageData image1 = new ImageData(
+                "https://imagestoragetest.s3.eu-central-1.amazonaws.com/project_03Iz3iPs6kA0FpkJ/d61d86f9-6241-4b9f-97be-8eda54a0c3c5.png",
+                null
+        );
+        ImageData image2 = new ImageData(
+                "https://imagestoragetest.s3.eu-central-1.amazonaws.com/project_03Iz3iPs6kA0FpkJ/8c789d59-171e-4906-8e68-dbdd54c69f99.png",
+                null
+        );
+        ImageData image3 = new ImageData(
+                "https://imagestoragetest.s3.eu-central-1.amazonaws.com/project_4bOENjbbaRKmp7Vi/f980d427-1990-4114-a7f3-821b799f4d4d.png",
+                null
+        );
+        ImageData image4 = new ImageData(
+                "https://imagestoragetest.s3.eu-central-1.amazonaws.com/project_sOvdQ25AE4G3lOnY/c1fd684c-26a6-4e93-8ba2-81227d4ebe0a.png",
+                null
+        );
+        ImageData image5 = new ImageData(
+                "https://imagestoragetest.s3.eu-central-1.amazonaws.com/project_ZV9nOVNeqqVzsQuk/51cb5a82-a84c-42b6-90b2-d03ba245b8c8.png",
+                null
+        );
+        ImageData image6 = new ImageData(
+                "https://imagestoragetest.s3.eu-central-1.amazonaws.com/project_1fsCK3Yoa4frikw2/fa29922c-bbdb-4aa5-ab4f-8dc9909d307d.png",
+                null
+        );
+        ImageData image7 = new ImageData(
+                "https://imagestoragetest.s3.eu-central-1.amazonaws.com/project_9iUfPtmwmpymh5hi/c4d09a26-1d4b-4f1b-b6f3-d5900d6cd9bb.png",
+                null
+        );
+        ImageData image8 = new ImageData(
+                "https://imagestoragetest.s3.eu-central-1.amazonaws.com/project_lN0RNFAtGwvKA1Jl/55516b1e-7bd0-4379-9444-4df28e49288b.png",
+                null
+        );
+        ImageData image9 = new ImageData(
+                "https://imagestoragetest.s3.eu-central-1.amazonaws.com/project_RAntsU0HPYkV9J79/37e07616-31a5-40d7-9c15-eeea5402a377.png",
+                null
+        );
         ProjectTag tag1 = new ProjectTag("pets");
         ProjectTag tag2 = new ProjectTag("environment");
         ProjectTag tag3 = new ProjectTag("community");

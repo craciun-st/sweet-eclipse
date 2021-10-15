@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.util.NoSuchElementException;
+
 @Controller
 public class StripeListener {
 
@@ -62,17 +64,16 @@ public class StripeListener {
             return ResponseEntity.notFound().build();
         } catch (SignatureVerificationException e) {
             logger.error(
-                    "Invalid signature: " +
-                            ((signatureHeader != null && !signatureHeader.equals("")) ? signatureHeader : "EMPTY")
+                    "Invalid signature: " + getStringOrEmpty(signatureHeader)
             );
             return ResponseEntity.notFound().build();
         }
 
         EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
         StripeObject stripeObject = null;
-        if (dataObjectDeserializer.getObject().isPresent()) {
-            stripeObject = dataObjectDeserializer.getObject().get();
-        } else {
+        try {
+            stripeObject = dataObjectDeserializer.getObject().orElseThrow();
+        } catch (NoSuchElementException e){
             logger.error("Deserialization failed, probably due to an API version mismatch!");
             return ResponseEntity.internalServerError().build();
             // Refer to the Javadoc documentation on `EventDataObjectDeserializer` for
@@ -96,6 +97,10 @@ public class StripeListener {
         }
 
         return ResponseEntity.ok().build();
+    }
+
+    private String getStringOrEmpty(String someString) {
+        return (someString != null && !someString.equals("")) ? someString : "EMPTY";
     }
 
     public void handlePaymentSuccess(Double amountToDonate, Long projectId) {

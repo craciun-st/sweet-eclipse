@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAtom} from "jotai";
 import {
     amountToDonate,
@@ -21,8 +21,19 @@ function DonatePage(props: any) {
     const [imageUriForProject, setImageUriForProject] = useAtom(imageUriForDonationIntent);
     const [idForProject, setIdForProject] = useAtom(idForDonationIntent);
     const [clientSecret, setClientSecret] = useAtom(localClientSecret);
+    const [shouldRedirect, setShouldRedirect] = useState(false)
     const [amountForProject] = useAtom(amountToDonate)
 
+
+    const browserHistory = useHistory();
+
+    useEffect( () => {
+            if (shouldRedirect) {
+                browserHistory.push("/project/" + idForProject)
+            }
+        },
+        [idForProject, shouldRedirect]
+    )
 
 
     const fullHeightStyle = {
@@ -61,6 +72,7 @@ function DonatePage(props: any) {
             // The payment has been processed!
             if (result.paymentIntent.status === 'succeeded') {
                 alert('Payment has succeeded!');
+                setShouldRedirect(true)
                 setClientSecret("")
             }
         }

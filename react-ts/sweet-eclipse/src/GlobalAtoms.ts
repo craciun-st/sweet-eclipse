@@ -6,6 +6,7 @@ export const isLoggedInAtom = atom(false)
 export const isDonateModalActive = atom(false)
 export const isSignUpModalActive = atom(false)
 export const isLoginModalActive = atom(false)
+export const isAddProjectModalActive = atom(false)
 
 // Donation data
 export const titleForDonationIntent = atom("")
