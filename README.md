@@ -32,6 +32,9 @@ all dependencies have been installed (e.g. ``npm install``).
 
 TODO
 ----
-- Integrate with Stripe API
-- Find a storage solution for images
-- Package the client code (``npm run build``, update CORS etc.) and deploy 
+- [x] <del>Integrate with Stripe API</del> (see ``development`` branch)
+  - [ ] Handle more error cases 
+  - [ ] Use Stripe Connect to create Custom Accounts for projects
+- [x] <del>Find a storage solution for images</del> (Using AWS S3 - see ``aws_image_storage_branch``)
+  - [ ] Implement front-end
+- [ ] Package the client code (``npm run build``, update CORS etc.) and deploy 
