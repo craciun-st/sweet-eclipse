@@ -14,7 +14,7 @@ function WelcomeMessage(props: any) {
          username = localData.account.toString();
     }
     return (
-        <div className={"content welcomeMessage"} style={messageStyle}>
+        <div className={"button is-white is-disabled welcomeMessage"} style={messageStyle}>
             Welcome, {username}!
         </div>
     );
