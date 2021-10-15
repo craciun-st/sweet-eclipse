@@ -35,6 +35,6 @@ TODO
 - [x] <del>Integrate with Stripe API</del> (see ``development`` branch)
   - [ ] Handle more error cases 
   - [ ] Use Stripe Connect to create Custom Accounts for projects
-- [x] <del>Find a storage solution for images</del> (Using AWS S3 - see ``aws_image_storage_branch``)
+- [x] <del>Find a storage solution for images</del> (Using AWS S3 - see ``aws_image_storage`` branch)
   - [ ] Implement front-end upload of images
 - [ ] Package the client code (``npm run build``, update CORS etc.) and deploy 
