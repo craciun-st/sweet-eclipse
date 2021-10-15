@@ -3,7 +3,9 @@ import BrandLogo from "./BrandLogo";
 import NavbarBurger from "./NavbarBurger";
 import DropdownMenu from "./DropdownMenu";
 import NavbarItem from "./NavbarItem";
-import AuthenticationContainer from "../mainpage/auth_elements/AuthenticationContainer";
+import AuthenticationContainer from "./auth_elements/AuthenticationContainer";
+
+import './navbar.css'
 
 function Navbar(props: any) {
     return (

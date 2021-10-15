@@ -17,9 +17,6 @@
     flex-basis: 30%;
 }
 
-.welcomeMessage {
-    margin-right: 0.25rem;
-}
 
 .card div > img {
     display: block;
