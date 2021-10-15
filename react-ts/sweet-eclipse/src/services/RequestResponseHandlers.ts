@@ -1,6 +1,6 @@
 import {ClientPersistedData} from "../ts-declarations/ClientPersistedData";
 
-function getClientPersistedData() {
+function getClientPersistedData(): ClientPersistedData {
     const dataInStorage: string | null = localStorage.getItem("sweetEclipse");
     const data: ClientPersistedData = dataInStorage ? JSON.parse(dataInStorage) : {}
     return data;
