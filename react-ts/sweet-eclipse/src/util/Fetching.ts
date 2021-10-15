@@ -55,3 +55,30 @@ export function doPostAndProcessResponse(
 }
 
 
+export function doMultiPartFormPostWithBasicAuthCred(
+    url: string,
+    authHeader: string,
+    bodyForm: FormData,
+    callback: (data: { status: number }) => void,
+    errorCallback: (err: Error) => void
+) {
+    return fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+            'Accept': '*/*',
+            'Content-Type': 'multipart/form-data',
+            'Authorization': authHeader
+        },
+        body: bodyForm
+    })
+        .then(response => response.json())
+        .then(data => callback(data))
+        .catch(err => {
+            console.log("Error while POST at " + url + ": " + err);
+            errorCallback(err)
+        });
+}
+
+
